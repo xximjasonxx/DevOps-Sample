@@ -1,0 +1,52 @@
+
+trigger:
+  branches:
+    include:
+      - dev
+  paths:
+    include:
+      - AuthApi
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Docker@2
+    displayName: Login to Registry
+    inputs:
+      command: login
+      containerRegistry: MovieAppRegistryConnection
+
+  - task: Docker@2
+    displayName: Build Unchecked Docker Image
+    inputs:
+      command: build
+      containerRegistry: MovieAppRegistryConnection
+      repository: authapi-unchecked
+      tags: $(Build.BuildId)
+  
+  - task: Docker@2
+    displayName: Push Unchecked Image
+    inputs:
+      command: push
+      containerRegistry: MovieAppRegistryConnection
+      repository: authapi-unchecked
+      tags: $(Build.BuildId)
+
+  # insert anchore step
+
+  - task: Docker@2
+    displayName: Build Final Docker Image
+    inputs:
+      command: build
+      containerRegistry: MovieAppRegistryConnection
+      repository: authapi
+      tags: $(Build.BuildId)
+
+  - task: Docker@2
+    displayName: Push Final Image
+    inputs:
+      command: push
+      containerRegistry: MovieAppRegistryConnection
+      repository: authapi
+      tags: $(Build.BuildId)
