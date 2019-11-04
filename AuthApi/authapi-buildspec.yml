@@ -25,6 +25,17 @@ steps:
       repository: authapi-unchecked
       tags: $(Build.BuildId)
   
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.6"
+
+  - script: python -m pip install --upgrade pip setuptools wheel
+    displayName: "Install Python tools"
+
+  - script: |
+      pip install anchorecli
+    displayName: Install Anchore CLI tool
+
   - task: Docker@2
     displayName: Push Unchecked Image
     inputs:
