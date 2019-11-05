@@ -47,7 +47,7 @@ resource "azurerm_app_service" "authapi" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
   app_service_plan_id = "${azurerm_app_service_plan.plan.id}"
 
-  app_settings {
+  app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     DOCKER_REGISTRY_SERVER_URL = "${data.azurerm_container_registry.registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
