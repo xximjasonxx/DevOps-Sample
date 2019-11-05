@@ -75,3 +75,9 @@ stages:
               containerRegistry: MovieAppRegistryConnection
               repository: authapi
               tags: $(Build.BuildId)
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish CI Infrastructure folder
+            inputs:
+              ArtifactName: CI_Infra
+              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
