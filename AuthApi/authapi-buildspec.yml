@@ -7,7 +7,7 @@ trigger:
     include:
       - AuthApi
     exclude:
-      - AuthApi/authapi-buildspec.yaml
+      - AuthApi/authapi-buildspec.yml
 
 pool:
   vmImage: 'ubuntu-latest'
