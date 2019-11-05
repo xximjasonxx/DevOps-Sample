@@ -17,7 +17,7 @@ terraform {
     resource_group_name  = "movieappwmp-rg"
     storage_account_name = "movieappwmpstate"
     container_name       = "tfstate"
-    key                  = "authapi-state"
+    key                  = "authapi-ci-state"
   }
 }
 data "azurerm_resource_group" "rg" {
@@ -43,8 +43,8 @@ resource "azurerm_app_service_plan" "plan" {
 
 resource "azurerm_app_service" "authapi" {
   name                = "authapi-dev"
-  location            = "${azurerm_resource_group.rg.location}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  location            = "${data.azurerm_resource_group.rg.location}"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
   app_service_plan_id = "${azurerm_app_service_plan.plan.id}"
 
   app_settings {
