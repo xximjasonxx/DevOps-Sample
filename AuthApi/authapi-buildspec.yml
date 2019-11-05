@@ -6,6 +6,8 @@ trigger:
   paths:
     include:
       - AuthApi
+    exclude:
+      - AuthApi/authapi-buildspec.yaml
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -51,6 +53,8 @@ steps:
       enginePassword: '$(AnchoreEnginePassword)'
       imageName: 'movieappwmpregistry.azurecr.io/authapi-unchecked:$(Build.BuildId)'
       doVulnScan: true
+      minHighAllowed: 0
+      
 
   - task: Docker@2
     displayName: Build Final Docker Image
