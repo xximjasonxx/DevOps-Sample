@@ -11,15 +11,6 @@ variable "container_id" {
   type = "string"
 }
 
-
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "movieappwmp-rg"
-    storage_account_name = "movieappwmpstate"
-    container_name       = "tfstate"
-    key                  = "authapi-ci-state"
-  }
-}
 data "azurerm_resource_group" "rg" {
     name = "${var.app_name}-rg"
 }
