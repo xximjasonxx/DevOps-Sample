@@ -32,8 +32,8 @@ namespace AuthApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-            //app.UseHsts();
-            //app.UseHttpsRedirection();
+            app.UseHsts();
+            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
