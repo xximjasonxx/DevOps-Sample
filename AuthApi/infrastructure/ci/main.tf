@@ -2,6 +2,15 @@ provider "azurerm" {
   version = "=1.36.0"
 }
 
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "movieappwmp-rg"
+    storage_account_name = "movieappwmpstate"
+    container_name       = "authapi-state"
+    key                  = "dev-state"
+  }
+}
+
 variable "app_name" {
   type = "string"
 }
