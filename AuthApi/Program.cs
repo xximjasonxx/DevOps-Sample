@@ -19,7 +19,6 @@ namespace AuthApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("https://*:443")
                 .UseStartup<Startup>();
     }
 }
