@@ -6,7 +6,6 @@ variable "app_name" {
   type = "string"
 }
 
-
 terraform {
   backend "azurerm" {
     resource_group_name  = "movieappwmp-rg"
