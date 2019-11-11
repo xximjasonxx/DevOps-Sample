@@ -30,7 +30,7 @@ data "azurerm_container_registry" "registry" {
 }
 
 resource "azurerm_app_service_plan" "plan" {
-  name = "AuthApiPreProd_ConsumptionPlan"
+  name = "${var.app_name}-${var.env_name}-ConsumptionPlan"
   location = "${data.azurerm_resource_group.rg.location}"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
   kind = "Linux"

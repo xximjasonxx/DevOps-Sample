@@ -6,7 +6,7 @@ namespace AuthApi.Data
 {
     public class UserDbContext : DbContext, IUserDbContext
     {
-        public UserDbContext(DbContextOptions<DbContext> options) : base(options)
+        public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
 
         }

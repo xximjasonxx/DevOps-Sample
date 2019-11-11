@@ -21,7 +21,7 @@ namespace AuthApi.Controllers
         public async Task<IActionResult> Create([FromBody]UserCreateRequest request)
         {
             var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
-            return Created(string.Empty, string.Empty);
+            return Created(string.Empty, user.Id);
         }
     }
 }
