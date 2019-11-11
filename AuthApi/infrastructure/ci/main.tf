@@ -61,13 +61,17 @@ resource "azurerm_sql_firewall_rule" "firewall" {
   server_name         = "${azurerm_sql_server.sql.name}"
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
+
+  tags = {
+    environment = "${var.env_name}"
+  }
 }
 
 resource "azurerm_sql_database" "database" {
   name                = "${var.app_name}-auth-db"
-  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
-  location                      = "${data.azurerm_resource_group.rg.location}"
-  server_name                   = "${azurerm_sql_server.sql.name}"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  location            = "${data.azurerm_resource_group.rg.location}"
+  server_name         = "${azurerm_sql_server.sql.name}"
 
   tags = {
     environment = "${var.env_name}"
