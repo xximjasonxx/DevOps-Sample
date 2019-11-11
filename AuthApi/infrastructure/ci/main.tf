@@ -49,7 +49,7 @@ resource "azurerm_sql_server" "sql" {
   administrator_login           = "${var.env_name}-admin"
   administrator_login_password  = "Password01!"
 
-  tags {
+  tags = {
     environment = "${var.env_name}"
   }
 }
@@ -60,7 +60,7 @@ resource "azurerm_sql_database" "database" {
   location                      = "${data.azurerm_resource_group.rg.location}"
   server_name                   = "${azurerm_sql_server.sql.name}"
 
-  tags {
+  tags = {
     environment = "${var.env_name}"
   }
 }
@@ -88,7 +88,7 @@ resource "azurerm_app_service" "authapi" {
     type = "SystemAssigned"
   }
 
-  tags {
+  tags = {
     environment = "${var.env_name}"
   }
 }
