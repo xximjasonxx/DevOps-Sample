@@ -54,6 +54,15 @@ resource "azurerm_sql_server" "sql" {
   }
 }
 
+
+resource "azurerm_sql_firewall_rule" "firewall" {
+  name                = "${var.app_name}-${var.env_name}-sqlserver-azure-fw-rule"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  server_name         = "${azurerm_sql_server.sql.name}"
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
 resource "azurerm_sql_database" "database" {
   name                = "${var.app_name}-auth-db"
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
