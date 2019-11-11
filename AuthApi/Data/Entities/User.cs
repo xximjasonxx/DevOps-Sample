@@ -9,5 +9,6 @@ namespace AuthApi.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string EmailAddress { get; set; }
+        public string Password { get; set; }
     }
 }
