@@ -16,6 +16,10 @@ variable "container_id" {
   type = "string"
 }
 
+variable "env_name" {
+  type = "string"
+}
+
 data "azurerm_resource_group" "rg" {
     name = "${var.app_name}-rg"
 }
@@ -26,7 +30,7 @@ data "azurerm_container_registry" "registry" {
 }
 
 resource "azurerm_app_service_plan" "plan" {
-  name = "AuthApiPreProd_ConsumptionPlan"
+  name = "${var.app_name}-${var.env_name}-ConsumptionPlan"
   location = "${data.azurerm_resource_group.rg.location}"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
   kind = "Linux"
@@ -37,8 +41,32 @@ resource "azurerm_app_service_plan" "plan" {
   }
 }
 
+resource "azurerm_sql_server" "sql" {
+  name                          = "${var.app_name}-${var.env_name}-sqlserver"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  location                      = "${data.azurerm_resource_group.rg.location}"
+  version                       = "12.0"
+  administrator_login           = "${var.env_name}-admin"
+  administrator_login_password  = "Password01!"
+
+  tags {
+    environment = "${var.env_name}"
+  }
+}
+
+resource "azurerm_sql_database" "database" {
+  name                = "${var.app_name}-auth-db"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  location                      = "${data.azurerm_resource_group.rg.location}"
+  server_name                   = "${azurerm_sql_server.sql.name}"
+
+  tags {
+    environment = "${var.env_name}"
+  }
+}
+
 resource "azurerm_app_service" "authapi" {
-  name                = "${var.app_name}-authapi-dev"
+  name                = "${var.app_name}-authapi-${var.env_name}"
   location            = "${data.azurerm_resource_group.rg.location}"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
   app_service_plan_id = "${azurerm_app_service_plan.plan.id}"
@@ -48,6 +76,7 @@ resource "azurerm_app_service" "authapi" {
     DOCKER_REGISTRY_SERVER_URL = "${data.azurerm_container_registry.registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
     DOCKER_REGISTRY_SERVER_PASSWORD = "${data.azurerm_container_registry.registry.admin_password}"
+    ConnectionString                = "Server=${azurerm_sql_server.sql.fully_qualified_domain_name};Database=${azurerm_sql_database.database.name};User Id=${azurerm_sql_server.sql.administrator_login};Password=${azurerm_sql_server.sql.administrator_login_password}"
   }
 
   site_config {
@@ -57,5 +86,9 @@ resource "azurerm_app_service" "authapi" {
 
   identity {
     type = "SystemAssigned"
+  }
+
+  tags {
+    environment = "${var.env_name}"
   }
 }
