@@ -71,10 +71,6 @@ resource "azurerm_sql_database" "database" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
   location            = "${data.azurerm_resource_group.rg.location}"
   server_name         = "${azurerm_sql_server.sql.name}"
-
-  tags = {
-    environment = "${var.env_name}"
-  }
 }
 
 resource "azurerm_app_service" "authapi" {
