@@ -1,4 +1,6 @@
 ﻿using AuthApi.Data;
+using AuthApi.Providers;
+using AuthApi.Providers.Impl;
 using AuthApi.Services;
 using AuthApi.Services.Impl;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +34,7 @@ namespace AuthApi
             });
 
             services.AddTransient<IUserCreateService, UserCreateService>();
+            services.AddTransient<IGetUserProvider, GetUserProvider>();
             services.AddTransient<IPasswordHasher, Rfc2898DeriveBytesPasswordHasher>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -5,10 +5,10 @@ namespace AuthApi.Models
 {
     public class LoginRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Email Address is required")]
         public string EmailAddress { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
     }
 }
