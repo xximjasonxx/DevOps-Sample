@@ -54,7 +54,6 @@ resource "azurerm_sql_server" "sql" {
   }
 }
 
-
 resource "azurerm_sql_firewall_rule" "firewall" {
   name                = "${var.app_name}-${var.env_name}-sqlserver-azure-fw-rule"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"

@@ -7,10 +7,12 @@ namespace AuthApi.Services.Impl
     public class UserCreateService : IUserCreateService
     {
         private readonly IUserDbContext _userDbContext;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserCreateService(IUserDbContext userDbContext)
+        public UserCreateService(IUserDbContext userDbContext, IPasswordHasher passwordHasher)
         {
             _userDbContext = userDbContext;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> CreateUser(string emailAddress, string password)
@@ -18,7 +20,7 @@ namespace AuthApi.Services.Impl
             var newUser = new User
             {
                 EmailAddress = emailAddress,
-                Password = password
+                Password = _passwordHasher.HashPassword(password)
             };
 
             await _userDbContext.Users.AddAsync(newUser);
