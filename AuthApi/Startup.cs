@@ -32,6 +32,8 @@ namespace AuthApi
             });
 
             services.AddTransient<IUserCreateService, UserCreateService>();
+            services.AddTransient<IPasswordHasher, Rfc2898DeriveBytesPasswordHasher>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<ApiBehaviorOptions>(o =>
             {
