@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using AuthApi.Ex;
 using AuthApi.Models;
 using AuthApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,15 @@ namespace AuthApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]UserCreateRequest request)
         {
-            var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
-            return Created(string.Empty, user.Id);
+            try
+            {
+                var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
+                return Created(string.Empty, user.Id);
+            }
+            catch (DuplicateUserException)
+            {
+                return Conflict("Email address is already in use");
+            }
         }
     }
 }
