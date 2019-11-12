@@ -23,12 +23,12 @@ namespace AuthApi.Services.Impl
 
         public bool CheckPasswordHash(string hashedPassword, string rawPassword)
         {
-            var hashParts = hashedPassword.Split('.', 3);
-            if (hashParts.Length != 3)
+            var hashParts = hashedPassword.Split('.', 2);
+            if (hashParts.Length != 2)
                 throw new FormatException("Hashed Passsword was not in the excepted format");
 
-            var salt = Convert.FromBase64String(hashParts[1]);
-            var key = Convert.FromBase64String(hashParts[2]);
+            var salt = Convert.FromBase64String(hashParts[0]);
+            var key = Convert.FromBase64String(hashParts[1]);
 
             using (var algorithm = new Rfc2898DeriveBytes(rawPassword, salt, Iterations, HashAlgorithmName.SHA256))
             {
