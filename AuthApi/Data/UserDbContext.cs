@@ -8,7 +8,7 @@ namespace AuthApi.Data
     {
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            this.Database.Migrate();
         }
 
         public DbSet<User> Users { get; set; 
