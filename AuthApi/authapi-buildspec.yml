@@ -96,11 +96,9 @@ stages:
               repository: authapi
               tags: $(Build.BuildId)
 
-          - script: ls -la $(Build.SourcesDirectory)
-
           - task: PublishBuildArtifacts@1
             displayName: Publish CI Infrastructure folder
             inputs:
               ArtifactName: CI_Infra
-              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/cis
+              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
 
