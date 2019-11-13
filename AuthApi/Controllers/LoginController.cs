@@ -30,7 +30,7 @@ namespace AuthApi.Controllers
             }
 
             var webToken = _createTokenService.CreateToken(user);
-            return Ok(webToken);
+            return Accepted(string.Empty, webToken);
         }
     }
 }
