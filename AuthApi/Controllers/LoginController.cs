@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthApi.Controllers
 {
     [Route("api/v1/login")]
+    [ApiController]
     public class LoginController : Controller
     {
         private readonly IGetUserProvider _getUserProvider;
