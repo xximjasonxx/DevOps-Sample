@@ -20,6 +20,10 @@ variable "env_name" {
   type = "string"
 }
 
+variable "jwt_key" {
+  type = "string"
+}
+
 data "azurerm_resource_group" "rg" {
     name = "${var.app_name}-rg"
 }
@@ -84,7 +88,10 @@ resource "azurerm_app_service" "authapi" {
     DOCKER_REGISTRY_SERVER_URL = "${data.azurerm_container_registry.registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
     DOCKER_REGISTRY_SERVER_PASSWORD = "${data.azurerm_container_registry.registry.admin_password}"
-    ConnectionString                = "Server=${azurerm_sql_server.sql.fully_qualified_domain_name};Database=${azurerm_sql_database.database.name};User Id=${azurerm_sql_server.sql.administrator_login};Password=${azurerm_sql_server.sql.administrator_login_password}"
+    ConnectionString                = "Server=${azurerm_sql_server.sql.fully_qualified_domain_name};Database=${azurerm_sql_database.database.name};User Id=${azurerm_sql_server.sql.administrator_login};Password=${azurerm_sql_server.sql.administrator_login_password}",
+    JwtKey                          = "${var.jwt_key}"
+    JwtIssuer                       = "${var.app_name}"
+    JwtAudience                     = "${var.app_name}-${var.env_name}"
   }
 
   site_config {
