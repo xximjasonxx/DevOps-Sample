@@ -6,11 +6,13 @@ trigger:
   paths:
     include:
       - AuthApi
+      - AuthApi.Tests
     exclude:
       - AuthApi/authapi-buildspec.yml
 
 stages:
-  - stage: Build
+  - stage: build
+    displayName: Build Artifact
     jobs:
       - job: Build
         pool:
@@ -81,3 +83,18 @@ stages:
             inputs:
               ArtifactName: CI_Infra
               PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
+  
+  - stage: verify
+    displayName: Verify Artifact
+    jobs:
+      - job: Test
+        pool:
+          vmImage: 'ubuntu-latest'
+        continueOnError: false
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Execute Unit Tests
+            inputs:
+              command: test
+              workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
+
