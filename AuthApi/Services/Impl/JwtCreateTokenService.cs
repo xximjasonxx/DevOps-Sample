@@ -12,6 +12,11 @@ namespace AuthApi.Services.Impl
     {
         private readonly IConfiguration _configuration;
 
+        public JwtCreateTokenService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string CreateToken(User user)
         {
             if (user == null)
