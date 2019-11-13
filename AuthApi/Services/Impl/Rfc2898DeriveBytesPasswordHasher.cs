@@ -12,6 +12,9 @@ namespace AuthApi.Services.Impl
 
         public string HashPassword(string rawPassword)
         {
+            if (string.IsNullOrEmpty(rawPassword))
+                throw new ArgumentException(nameof(rawPassword));
+
             using (var algorithm = new Rfc2898DeriveBytes(rawPassword, SaltSize, Iterations, HashAlgorithmName.SHA256))
             {
                 var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
@@ -23,6 +26,12 @@ namespace AuthApi.Services.Impl
 
         public bool CheckPasswordHash(string hashedPassword, string rawPassword)
         {
+            if (string.IsNullOrEmpty(hashedPassword))
+                throw new ArgumentException(hashedPassword);
+
+            if (string.IsNullOrEmpty(rawPassword))
+                throw new ArgumentException(rawPassword);
+
             var hashParts = hashedPassword.Split('.', 2);
             if (hashParts.Length != 2)
                 throw new FormatException("Hashed Passsword was not in the excepted format");
