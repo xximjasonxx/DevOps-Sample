@@ -12,7 +12,7 @@ trigger:
 
 stages:
   - stage: build
-    displayName: Build Artifact
+    displayName: Create Artifact
     jobs:
       - job: Build
         pool:
@@ -60,8 +60,28 @@ stages:
               imageName: 'movieappwmpregistry.azurecr.io/authapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
-              
 
+      - job: verify
+        displayName: Verify Artifact
+        pool:
+          vmImage: 'ubuntu-latest'
+        continueOnError: false
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Execute Unit Tests
+            inputs:
+              command: test
+              workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
+
+  - stage: push
+    displayName: Push Artifact
+    dependsOn:
+      - 'build'
+      - 'verify'
+    jobs:
+      - job: push
+        displayName: Push to Docker Registry
+        steps:
           - task: Docker@2
             displayName: Build Final Docker Image
             inputs:
@@ -82,19 +102,5 @@ stages:
             displayName: Publish CI Infrastructure folder
             inputs:
               ArtifactName: CI_Infra
-              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
-  
-  - stage: verify
-    displayName: Verify Artifact
-    jobs:
-      - job: Test
-        pool:
-          vmImage: 'ubuntu-latest'
-        continueOnError: false
-        steps:
-          - task: DotNetCoreCLI@2
-            displayName: Execute Unit Tests
-            inputs:
-              command: test
-              workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
+              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/cis
 
