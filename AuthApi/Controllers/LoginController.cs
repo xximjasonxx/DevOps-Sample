@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AuthApi.Models;
 using AuthApi.Providers;
+using AuthApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthApi.Controllers
@@ -10,10 +11,12 @@ namespace AuthApi.Controllers
     public class LoginController : Controller
     {
         private readonly IGetUserProvider _getUserProvider;
+        private readonly ICreateTokenService _createTokenService;
 
-        public LoginController(IGetUserProvider getUserProvider)
+        public LoginController(IGetUserProvider getUserProvider, ICreateTokenService createTokenService)
         {
             _getUserProvider = getUserProvider;
+            _createTokenService = createTokenService;
         }
 
         [HttpPost]
@@ -25,7 +28,8 @@ namespace AuthApi.Controllers
                 return Unauthorized("Credentials were not valid");
             }
 
-            return Ok(user);
+            var webToken = _createTokenService.CreateToken(user);
+            return Ok(webToken);
         }
     }
 }

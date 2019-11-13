@@ -12,10 +12,12 @@ namespace AuthApi.Controllers
     public class UserController : Controller
     {
         private readonly IUserCreateService _userCreateService;
+        private readonly ICreateTokenService _createTokenService;
 
-        public UserController(IUserCreateService userCreateService)
+        public UserController(IUserCreateService userCreateService, ICreateTokenService createTokenService)
         {
             _userCreateService = userCreateService;
+            _createTokenService = createTokenService;
         }
 
         [HttpPost]
@@ -24,7 +26,9 @@ namespace AuthApi.Controllers
             try
             {
                 var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
-                return Created(string.Empty, user.Id);
+                var webToken = _createTokenService.CreateToken(user);
+
+                return Created(string.Empty, webToken);
             }
             catch (DuplicateUserException)
             {
