@@ -75,9 +75,7 @@ stages:
 
   - stage: push
     displayName: Push Artifact
-    dependsOn:
-      - 'build'
-      - 'verify'
+    dependsOn: 'build'
     jobs:
       - job: push
         displayName: Push to Docker Registry
