@@ -27,6 +27,103 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c95ac98c-47af-415e-b9df-7b98a1c413e8",
+								"exec": [
+									"tests[\"Response code is 201\"] = responseCode.code === 201"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"emailAddress\": \"createdUser@test.com\",\n\t\"password\": \"tester\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v1/user",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Duplicate User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba1ef991-edc0-40a1-82aa-8181952fe2b9",
+								"exec": [
+									"tests[\"Response Code is 409\"] = responseCode.code === 409;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"emailAddress\": \"sampleuser@test.com\",\n\t\"password\": \"does not matter\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v1/user",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						},
+						"description": "This context is based on a user we assume exists thanks to seeding"
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
