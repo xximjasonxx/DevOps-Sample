@@ -107,3 +107,7 @@ resource "azurerm_app_service" "authapi" {
     environment = "${var.env_name}"
   }
 }
+
+output "appservice_url" {
+  value = "${azurerm_app_service.authapi.default_site_hostname}"
+}
