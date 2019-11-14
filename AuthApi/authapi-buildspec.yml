@@ -102,3 +102,9 @@ stages:
               ArtifactName: CI_Infra
               PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
 
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Newman Testing Collection
+            inputs:
+              ArtifactName: ApiTests
+              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/testing  
+
