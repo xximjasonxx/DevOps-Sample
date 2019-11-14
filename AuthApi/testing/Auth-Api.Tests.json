@@ -14,7 +14,8 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v1/ping",
+							"raw": "https://{{host}}/api/v1/ping",
+							"protocol": "https",
 							"host": [
 								"{{host}}"
 							],

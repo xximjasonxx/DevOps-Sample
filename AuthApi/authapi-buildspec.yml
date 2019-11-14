@@ -99,7 +99,7 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: Publish CI Infrastructure folder
             inputs:
-              ArtifactName: CI_Infra
+              ArtifactName: Infra
               PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
 
           - task: PublishBuildArtifacts@1
