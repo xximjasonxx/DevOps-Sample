@@ -33,18 +33,6 @@ data "azurerm_container_registry" "registry" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
-resource "azurerm_app_service_plan" "plan" {
-  name = "${var.app_name}-${var.env_name}-ConsumptionPlan"
-  location = "${data.azurerm_resource_group.rg.location}"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  kind = "Linux"
-  reserved = true
-  sku {
-    tier = "Basic"
-    size = "B1"
-  }
-}
-
 resource "azurerm_sql_server" "sql" {
   name                          = "${var.app_name}-${var.env_name}-sqlserver"
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
@@ -77,11 +65,17 @@ resource "azurerm_sql_database" "database" {
   }
 }
 
+data "azurerm_app_service_plan" "plan" {
+  name                = "PreProd-ConsumptionPlan"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  location            = "${data.azurerm_resource_group.rg.location}"
+}
+
 resource "azurerm_app_service" "authapi" {
   name                = "${var.app_name}-authapi-${var.env_name}"
   location            = "${data.azurerm_resource_group.rg.location}"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  app_service_plan_id = "${azurerm_app_service_plan.plan.id}"
+  app_service_plan_id = "${data.azurerm_app_service_plan.plan.id}"
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
