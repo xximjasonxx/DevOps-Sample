@@ -28,11 +28,11 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "azurerm_app_service_plan" "plan" {
-  name = "PreProd-ConsumptionPlan"
-  location = "${data.azurerm_resource_group.rg.location}"
+  name                = "${var.app_name}-PreProd-ConsumptionPlan"
+  location            = "${data.azurerm_resource_group.rg.location}"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  kind = "Linux"
-  reserved = true
+  kind                = "Linux"
+  reserved            = true
   sku {
     tier = "Basic"
     size = "B1"

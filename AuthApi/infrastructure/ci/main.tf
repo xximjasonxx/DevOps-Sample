@@ -66,9 +66,8 @@ resource "azurerm_sql_database" "database" {
 }
 
 data "azurerm_app_service_plan" "plan" {
-  name                = "PreProd-ConsumptionPlan"
+  name                = "${var.app_name}-PreProd-ConsumptionPlan"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  location            = "${data.azurerm_resource_group.rg.location}"
 }
 
 resource "azurerm_app_service" "authapi" {
