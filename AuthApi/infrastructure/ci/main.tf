@@ -70,6 +70,13 @@ data "azurerm_app_service_plan" "plan" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
+resource "azurerm_application_insights" "test" {
+  name                          = "${var.app_name}-${var.env_name}-insights"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  location                      = "${data.azurerm_resource_group.rg.location}"
+  application_type              = "web"
+}
+
 resource "azurerm_app_service" "authapi" {
   name                = "${var.app_name}-authapi-${var.env_name}"
   location            = "${data.azurerm_resource_group.rg.location}"
@@ -78,13 +85,14 @@ resource "azurerm_app_service" "authapi" {
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    DOCKER_REGISTRY_SERVER_URL = "${data.azurerm_container_registry.registry.login_server}"
+    DOCKER_REGISTRY_SERVER_URL      = "${data.azurerm_container_registry.registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
     DOCKER_REGISTRY_SERVER_PASSWORD = "${data.azurerm_container_registry.registry.admin_password}"
     ConnectionString                = "Server=${azurerm_sql_server.sql.fully_qualified_domain_name};Database=${azurerm_sql_database.database.name};User Id=${azurerm_sql_server.sql.administrator_login};Password=${azurerm_sql_server.sql.administrator_login_password}",
     JwtKey                          = "${var.jwt_key}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
+    APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.main.instrumentation_key}"
   }
 
   site_config {
