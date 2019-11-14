@@ -36,7 +36,7 @@ data "azurerm_container_registry" "registry" {
 resource "azurerm_sql_server" "sql" {
   name                          = "${var.app_name}-${var.env_name}-sqlserver"
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
-  location                      = "${data.azurerm_resource_group.rg.location}"
+  location                      = "${data.azurerm_resource_group.rg.location}"  
   version                       = "12.0"
   administrator_login           = "${var.env_name}-admin"
   administrator_login_password  = "Password01!"
@@ -70,7 +70,7 @@ data "azurerm_app_service_plan" "plan" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
-resource "azurerm_application_insights" "test" {
+resource "azurerm_application_insights" "insights" {
   name                          = "${var.app_name}-${var.env_name}-insights"
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
   location                      = "${data.azurerm_resource_group.rg.location}"
@@ -92,7 +92,7 @@ resource "azurerm_app_service" "authapi" {
     JwtKey                          = "${var.jwt_key}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
-    APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.main.instrumentation_key}"
+    APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.insights.instrumentation_key}"
   }
 
   site_config {
