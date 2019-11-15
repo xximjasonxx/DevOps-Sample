@@ -3,6 +3,7 @@ using AuthApi.Providers;
 using AuthApi.Providers.Impl;
 using AuthApi.Services;
 using AuthApi.Services.Impl;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,10 @@ namespace AuthApi
             services.AddTransient<ICreateTokenService, JwtCreateTokenService>();
             services.AddTransient<IPasswordHasher, Rfc2898DeriveBytesPasswordHasher>();
 
+            var aiKey = Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
+            services.AddApplicationInsightsTelemetry(aiKey);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.Configure<ApiBehaviorOptions>(o =>
             {
                 o.InvalidModelStateResponseFactory = actionContext =>
