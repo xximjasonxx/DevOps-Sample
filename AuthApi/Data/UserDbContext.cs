@@ -17,7 +17,7 @@ namespace AuthApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // seed a user
+            // seed a user we can use to check for duplicates
             modelBuilder.Entity<User>().HasData(
                 new User
                 {

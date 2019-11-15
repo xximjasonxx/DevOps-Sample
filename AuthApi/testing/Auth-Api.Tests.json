@@ -102,7 +102,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"emailAddress\": \"sampleuser@test.com\",\n\t\"password\": \"does not matter\"\n}",
+							"raw": "{\n\t\"emailAddress\": \"duplicateuser@test.com\",\n\t\"password\": \"does not matter\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
