@@ -9,3 +9,6 @@ This will create a running SQL Server instance we can connect to locally
 
 #### Auth
 The `JwtKey` values in the Release pipeline are just Base64 encoded GUIDs
+
+#### SonarQube
+https://msftplayground.com/2019/02/combining-sonarqube-and-azure-devops/

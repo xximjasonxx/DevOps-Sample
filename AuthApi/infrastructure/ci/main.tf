@@ -93,6 +93,7 @@ resource "azurerm_app_service" "authapi" {
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
     APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.insights.instrumentation_key}"
+    ASPNETCORE_ENVIRONMENT          = "${var.env_name}"
   }
 
   site_config {
