@@ -68,24 +68,18 @@ stages:
         continueOnError: false
         steps:
           - task: DotNetCoreCLI@2
-            displayName: Restore Dependencies
-            inputs:
-              command: restore
-              projects: "**/*.csproj"
-
-          - task: DotNetCoreCLI@2
             displayName: Execute Unit Tests
             inputs:
               command: test
-              arguments: --no-restore
               workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
+              restoreDirectory: $(Build.SourcesDirectory)/packages
 
-          - script: 'ls -l $(Build.SourcesDirectory)/AuthApi/bin/Debug/netcoreapp2.2'
+          - script: 'ls -l $(Build.SourcesDirectory)/packages'
 
           - task: WhiteSource Bolt@19
             displayName: Whitesource Scan
             inputs:
-              cwd: '$(Build.SourcesDirectory)/AuthApi/bin/Debug/netcoreapp2.2'
+              cwd: '$(Build.SourcesDirectory)/packages'
 
   - stage: push
     displayName: Push Artifact
