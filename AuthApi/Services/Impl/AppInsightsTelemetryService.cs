@@ -6,6 +6,11 @@ namespace AuthApi.Services.Impl
     {
         private readonly TelemetryClient _telemetryClient;
 
+        public AppInsightsTelemetryService(TelemetryClient telemetryClient)
+        {
+            _telemetryClient = telemetryClient;
+        }
+
         public void TrackEvent(string eventName)
         {
             _telemetryClient.TrackEvent(eventName);
