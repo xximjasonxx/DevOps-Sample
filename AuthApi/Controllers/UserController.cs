@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AuthApi.Ex;
 using AuthApi.Models;
 using AuthApi.Services;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthApi.Controllers
@@ -13,11 +14,14 @@ namespace AuthApi.Controllers
     {
         private readonly IUserCreateService _userCreateService;
         private readonly ICreateTokenService _createTokenService;
+        private readonly TelemetryClient _telemetryClient;
 
-        public UserController(IUserCreateService userCreateService, ICreateTokenService createTokenService)
+        public UserController(IUserCreateService userCreateService, ICreateTokenService createTokenService,
+            TelemetryClient telemetryClient)
         {
             _userCreateService = userCreateService;
             _createTokenService = createTokenService;
+            _telemetryClient = telemetryClient;
         }
 
         [HttpPost]
@@ -28,6 +32,7 @@ namespace AuthApi.Controllers
                 var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
                 var webToken = _createTokenService.CreateToken(user);
 
+                _telemetryClient.TrackEvent("User Created");
                 return Created(string.Empty, webToken);
             }
             catch (DuplicateUserException)
