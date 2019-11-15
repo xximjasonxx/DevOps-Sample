@@ -26,6 +26,7 @@ namespace AuthApi.Tests.Services
                 new Mock<IUserDbContext>().Object,
                 new Mock<IPasswordHasher>().Object,
                 getUserProviderMock.Object
+                
             );
 
             // act

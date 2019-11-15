@@ -37,6 +37,7 @@ namespace AuthApi
             services.AddTransient<IUserCreateService, UserCreateService>();
             services.AddTransient<IGetUserProvider, GetUserProvider>();
 
+            services.AddTransient<ITelemetryService, AppInsightsTelemetryService>();
             services.AddTransient<ICreateTokenService, JwtCreateTokenService>();
             services.AddTransient<IPasswordHasher, Rfc2898DeriveBytesPasswordHasher>();
 

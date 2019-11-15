@@ -17,7 +17,8 @@ namespace AuthApi.Tests.Controllers
             var userCreateServiceMock = new Mock<IUserCreateService>();
             var controller = new UserController(
                 userCreateServiceMock.Object,
-                new Mock<ICreateTokenService>().Object
+                new Mock<ICreateTokenService>().Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
@@ -36,7 +37,8 @@ namespace AuthApi.Tests.Controllers
                 .Throws(new DuplicateUserException());
             var controller = new UserController(
                 userCreateServiceMock.Object,
-                new Mock<ICreateTokenService>().Object
+                new Mock<ICreateTokenService>().Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
@@ -58,7 +60,8 @@ namespace AuthApi.Tests.Controllers
 
             var controller = new UserController(
                 userCreateServiceMock.Object,
-                createTokenMock.Object
+                createTokenMock.Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
@@ -76,7 +79,8 @@ namespace AuthApi.Tests.Controllers
             createTokenMock.Setup(x => x.CreateToken(It.IsAny<User>())).Returns("TestToken");
             var controller = new UserController(
                 new Mock<IUserCreateService>().Object,
-                createTokenMock.Object
+                createTokenMock.Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act

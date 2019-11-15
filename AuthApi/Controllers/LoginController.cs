@@ -14,14 +14,14 @@ namespace AuthApi.Controllers
     {
         private readonly IGetUserProvider _getUserProvider;
         private readonly ICreateTokenService _createTokenService;
-        private readonly TelemetryClient _telemetryClient;
+        private readonly ITelemetryService _telemetryService;
 
         public LoginController(IGetUserProvider getUserProvider, ICreateTokenService createTokenService,
-            TelemetryClient telemetryClient)
+            ITelemetryService telemetryService)
         {
             _getUserProvider = getUserProvider;
             _createTokenService = createTokenService;
-            _telemetryClient = telemetryClient;
+            _telemetryService = telemetryService;
         }
 
         [HttpPost]
@@ -29,11 +29,11 @@ namespace AuthApi.Controllers
         {
             var user = await _getUserProvider.GetUserByAuthenticationCredentials(request.EmailAddress, request.Password);
             if (user == null)
-                {_telemetryClient.TrackEvent("Login Failed");
+                {_telemetryService.TrackEvent("Login Failed");
                 return Unauthorized("Credentials were not valid");
             }
 
-            _telemetryClient.TrackEvent("Login Successful");
+            _telemetryService.TrackEvent("Login Successful");
             var webToken = _createTokenService.CreateToken(user);
             return Accepted(string.Empty, webToken);
         }

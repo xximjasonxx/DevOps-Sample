@@ -14,14 +14,14 @@ namespace AuthApi.Controllers
     {
         private readonly IUserCreateService _userCreateService;
         private readonly ICreateTokenService _createTokenService;
-        private readonly TelemetryClient _telemetryClient;
+        private readonly ITelemetryService _telemetryService;
 
         public UserController(IUserCreateService userCreateService, ICreateTokenService createTokenService,
-            TelemetryClient telemetryClient)
+            ITelemetryService telemetryService)
         {
             _userCreateService = userCreateService;
             _createTokenService = createTokenService;
-            _telemetryClient = telemetryClient;
+            _telemetryService = telemetryService;
         }
 
         [HttpPost]
@@ -32,7 +32,7 @@ namespace AuthApi.Controllers
                 var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
                 var webToken = _createTokenService.CreateToken(user);
 
-                _telemetryClient.TrackEvent("User Created");
+                _telemetryService.TrackEvent("User Created");
                 return Created(string.Empty, webToken);
             }
             catch (DuplicateUserException)

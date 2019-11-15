@@ -21,7 +21,8 @@ namespace AuthApi.Tests.Controllers
 
             var controller = new LoginController(
                 getUserProviderMock.Object,
-                new Mock<ICreateTokenService>().Object
+                new Mock<ICreateTokenService>().Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
@@ -42,7 +43,8 @@ namespace AuthApi.Tests.Controllers
 
             var controller = new LoginController(
                 getUserProviderMock.Object,
-                new Mock<ICreateTokenService>().Object
+                new Mock<ICreateTokenService>().Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
@@ -64,7 +66,8 @@ namespace AuthApi.Tests.Controllers
             var createTokenMock = new Mock<ICreateTokenService>();
             var controller = new LoginController(
                 getUserProviderMock.Object,
-                createTokenMock.Object
+                createTokenMock.Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
@@ -88,7 +91,8 @@ namespace AuthApi.Tests.Controllers
 
             var controller = new LoginController(
                 getUserProviderMock.Object,
-                createTokenMock.Object
+                createTokenMock.Object,
+                new Mock<ITelemetryService>().Object
             );
 
             // act
