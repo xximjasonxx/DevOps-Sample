@@ -12,3 +12,7 @@ The `JwtKey` values in the Release pipeline are just Base64 encoded GUIDs
 
 #### SonarQube
 https://msftplayground.com/2019/02/combining-sonarqube-and-azure-devops/
+
+#### Whitesource Bolt (must be activated) (free version)
+https://my.visualstudio.com/benefits?wt.mc_id=o~msft~docs
+5 scans per project per day
