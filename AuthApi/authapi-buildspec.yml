@@ -80,9 +80,14 @@ stages:
             displayName: Execute Unit Tests
             inputs:
               command: test
-              arguments: --no-restore
+              arguments: --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
               workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
               restoreDirectory: $(Build.SourcesDirectory)/packages
+
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.cobertura.xml'
 
           - task: WhiteSource Bolt@19
             displayName: Whitesource Scan
