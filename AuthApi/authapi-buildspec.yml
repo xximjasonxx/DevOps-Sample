@@ -74,6 +74,7 @@ stages:
               workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
 
           - task: WhiteSource Bolt@19
+            displayName: Whitesource Scan
             inputs:
               cwd: '$(Build.SourcesDirectory)/AuthApi/bin/Debug/netcoreapp2.2/'
 
