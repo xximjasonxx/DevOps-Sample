@@ -10,5 +10,6 @@ namespace AuthApi.Data
          DbSet<User> Users { get; }
 
          Task<int> SaveChangesAsync(CancellationToken token = default(CancellationToken));
+         Task SeedTestUsers();
     }
 }
