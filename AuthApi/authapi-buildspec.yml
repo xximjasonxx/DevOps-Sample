@@ -74,11 +74,8 @@ stages:
               workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
 
           - task: WhiteSource Bolt@19
-            displayName: Perform OSS Scan
             inputs:
-              cwd: '$(Build.SourcesDirectory)/AuthApi/bin/Debug/netcoreapp2.2'
-              advance: true
-            continueOnError: false
+              cwd: '$(Build.SourcesDirectory)/AuthApi/bin/Debug/netcoreapp2.2/'
 
   - stage: push
     displayName: Push Artifact
