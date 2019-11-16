@@ -116,10 +116,10 @@ stages:
               tags: $(Build.BuildId)
 
           - task: PublishBuildArtifacts@1
-            displayName: Publish CI Infrastructure folder
+            displayName: Publish Infrastructure folder
             inputs:
               ArtifactName: Infra
-              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
+              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure
 
           - task: PublishBuildArtifacts@1
             displayName: Publish Testing Files

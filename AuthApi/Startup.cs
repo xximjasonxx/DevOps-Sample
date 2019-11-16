@@ -57,13 +57,13 @@ namespace AuthApi
         {
             if (!_hostingEnvironment.IsEnvironment("production"))
             {
-                /*using (var serviceScope = app.ApplicationServices.CreateScope())
+                using (var serviceScope = app.ApplicationServices.CreateScope())
                 {
                     serviceScope.ServiceProvider.GetService<IUserDbContext>()
                         .SeedTestUsers()
                         .GetAwaiter()
                         .GetResult();
-                }*/
+                }
             }
 
             app.UseDeveloperExceptionPage();
