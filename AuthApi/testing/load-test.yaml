@@ -1,0 +1,12 @@
+config:
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - flow:
+    - post:
+        url: "/api/v1/user"
+        json:
+          emailAdress: "testuser{{ $randomString() }}@test.com"
+          password: "password"
