@@ -74,8 +74,6 @@ stages:
               restoreDirectory: $(Build.SourcesDirectory)/packages
               projects: "**/*.csproj"
 
-          - script: 'ls -l $(Build.SourcesDirectory)/packages'
-
           - task: DotNetCoreCLI@2
             displayName: Execute Unit Tests
             inputs:
@@ -124,8 +122,8 @@ stages:
               PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure/ci
 
           - task: PublishBuildArtifacts@1
-            displayName: Publish Newman Testing Collection
+            displayName: Publish Testing Files
             inputs:
-              ArtifactName: ApiTests
+              ArtifactName: Tests
               PathtoPublish: $(Build.SourcesDirectory)/AuthApi/testing  
 
