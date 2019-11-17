@@ -4,8 +4,7 @@ config:
       arrivalRate: 7
 
 scenarios:
-  name: "Execute Valid Login"
-  flow:
+  - flow:
     - post:
         url: "/api/v1/login"
         json: 
