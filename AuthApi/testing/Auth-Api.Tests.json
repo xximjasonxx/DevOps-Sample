@@ -16,8 +16,7 @@
 							"script": {
 								"id": "c95ac98c-47af-415e-b9df-7b98a1c413e8",
 								"exec": [
-									"tests[\"Response code is 201\"] = responseCode.code === 201",
-									"tests[\"Non Empty Response Returned\"] = responseBody.length > 0"
+									"tests[\"Create User response code is 201\"] = responseCode.code === 201"
 								],
 								"type": "text/javascript"
 							}
@@ -65,7 +64,7 @@
 							"script": {
 								"id": "ba1ef991-edc0-40a1-82aa-8181952fe2b9",
 								"exec": [
-									"tests[\"Response Code is 409\"] = responseCode.code === 409;"
+									"tests[\"Create Duplicate User response code is 409\"] = responseCode.code === 409;"
 								],
 								"type": "text/javascript"
 							}
@@ -114,8 +113,7 @@
 							"script": {
 								"id": "8361ba93-1538-4198-9a0a-388916639830",
 								"exec": [
-									"tests[\"Response code is 202\"] = responseCode.code === 202",
-									"tests[\"Non Empty Response Returned\"] = responseBody.length > 0"
+									"tests[\"Successful login response code is 202\"] = responseCode.code === 202"
 								],
 								"type": "text/javascript"
 							}
@@ -163,7 +161,7 @@
 							"script": {
 								"id": "7e00f7ad-af34-4f24-aa03-532673e28b8c",
 								"exec": [
-									"tests[\"Response code is 401\"] = responseCode.code === 401"
+									"tests[\"Unsuccessful login response code is 401\"] = responseCode.code === 401"
 								],
 								"type": "text/javascript"
 							}
