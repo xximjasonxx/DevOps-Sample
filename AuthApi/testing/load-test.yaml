@@ -1,10 +1,11 @@
 config:
   phases:
     - duration: 60
-      arrivalRate: 5
+      arrivalRate: 7
 
 scenarios:
-  - flow:
+  name: "Execute Valid Login"
+  flow:
     - post:
         url: "/api/v1/login"
         json: 

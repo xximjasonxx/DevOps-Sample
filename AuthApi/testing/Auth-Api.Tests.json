@@ -173,7 +173,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{host}}/api/v1/user",
+							"raw": "https://{{host}}/api/v1/login",
 							"protocol": "https",
 							"host": [
 								"{{host}}"
@@ -181,7 +181,7 @@
 							"path": [
 								"api",
 								"v1",
-								"user"
+								"login"
 							]
 						}
 					},
