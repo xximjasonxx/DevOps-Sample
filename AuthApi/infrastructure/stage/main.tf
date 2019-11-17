@@ -77,11 +77,9 @@ resource "azurerm_app_service_plan" "plan" {
   }
 }
 
-resource "azurerm_application_insights" "insights" {
-  name                          = "${var.app_name}-${var.env_name}-insights"
-  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
-  location                      = "${data.azurerm_resource_group.rg.location}"
-  application_type              = "web"
+data "azurerm_application_insights" "insights" {
+  name                = "${var.app_name}-metric-insights"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
 resource "azurerm_app_service" "authapi" {
@@ -99,7 +97,7 @@ resource "azurerm_app_service" "authapi" {
     JwtKey                          = "${var.jwt_key}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
-    APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.insights.instrumentation_key}"
+    APPINSIGHTS_INSTRUMENTATIONKEY  = "${data.azurerm_application_insights.insights.instrumentation_key}"
     ASPNETCORE_ENVIRONMENT          = "${var.env_name}"
   }
 

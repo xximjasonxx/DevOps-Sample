@@ -38,3 +38,10 @@ resource "azurerm_app_service_plan" "plan" {
     size = "B1"
   }
 }
+
+resource "azurerm_application_insights" "metric_insights" {
+  name                          = "${var.app_name}-metric-insights"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  location                      = "${data.azurerm_resource_group.rg.location}"
+  application_type              = "web"
+}
