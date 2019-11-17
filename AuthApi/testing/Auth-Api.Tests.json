@@ -9,38 +9,6 @@
 			"name": "v1",
 			"item": [
 				{
-					"name": "Ping Check",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "880551a6-b244-4bb5-b286-2b1f6308a740",
-								"exec": [
-									"tests[\"OK response is returned\"] = responseCode.code == 200"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://{{host}}/api/v1/ping",
-							"protocol": "https",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"ping"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create User",
 					"event": [
 						{
@@ -237,6 +205,38 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Ping Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "880551a6-b244-4bb5-b286-2b1f6308a740",
+						"exec": [
+							"tests[\"OK response is returned\"] = responseCode.code == 200"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/api/v1/ping",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ping"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
