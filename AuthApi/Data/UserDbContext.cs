@@ -11,7 +11,7 @@ namespace AuthApi.Data
     {
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
-            this.Database.Migrate();
+            //this.Database.Migrate();
         }
 
         public DbSet<User> Users { get; set; }
