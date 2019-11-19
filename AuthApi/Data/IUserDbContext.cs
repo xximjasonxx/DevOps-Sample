@@ -7,9 +7,10 @@ namespace AuthApi.Data
 {
     public interface IUserDbContext
     {
-         DbSet<User> Users { get; }
+        Database Database { get; }
+        DbSet<User> Users { get; }
 
-         Task<int> SaveChangesAsync(CancellationToken token = default(CancellationToken));
-         Task SeedTestUsers();
+        Task<int> SaveChangesAsync(CancellationToken token = default(CancellationToken));
+        Task SeedTestUsers();
     }
 }

@@ -55,15 +55,13 @@ namespace AuthApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            if (!_hostingEnvironment.IsEnvironment("production"))
+            using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                using (var serviceScope = app.ApplicationServices.CreateScope())
-                {
-                    serviceScope.ServiceProvider.GetService<IUserDbContext>()
-                        .SeedTestUsers()
-                        .GetAwaiter()
-                        .GetResult();
-                }
+                var context = serviceScope.ServiceProvider.GetService<IUserDbContext>();
+                context.Database.Migrate();
+
+                if (!_hostingEnvironment.IsEnvironment("production"))
+                    context.SeedTestUsers().GetAwaiter().GetResult();
             }
 
             app.UseDeveloperExceptionPage();
