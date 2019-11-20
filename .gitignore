@@ -331,3 +331,5 @@ ASALocalRun/
 
 .terraform/
 *.tfstate
+
+.vscode/
