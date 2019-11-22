@@ -4,10 +4,6 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "movieappwmp-rg"
-    storage_account_name = "movieappwmpstate"
-    container_name       = "tfstate"
-    key                  = "userapi-ci-state"
   }
 }
 
@@ -29,12 +25,6 @@ resource "azurerm_storage_account" "storage" {
   location                 = "${data.azurerm_resource_group.rg.location}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
-}
-
-resource "azurerm_storage_container" "storage" {
-  name                  = "userapi-${var.env_name}-artifacts"
-  storage_account_name  = "${azurerm_storage_account.storage.name}"
-  container_access_type = "private"
 }
 
 data "azurerm_app_service_plan" "plan" {
