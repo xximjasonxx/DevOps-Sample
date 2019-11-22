@@ -33,6 +33,13 @@ stages:
               includeRootFolder: false
               rootFolderOrFile: $(Build.SourcesDirectory)/output
 
+          - task: CopyFiles@2
+            displayName: Copy Infrastructure Scripts
+            inputs:
+              SourceFolder: $(Build.SourcesDirectory)/UserApi/infrastructure
+              TargetFolder: $(Build.ArtifactStagingDirectory)/infra
+              CleanTargetFolder: true
+
           - task: PublishBuildArtifacts@1
             displayName: Publish Artifact
             inputs:
