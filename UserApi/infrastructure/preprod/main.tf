@@ -32,14 +32,9 @@ data "azurerm_app_service_plan" "plan" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
-data "azurerm_container_registry" "registry" {
-  name = "${var.app_name}registry"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-}
-
 resource "azurerm_function_app" "funcApp" {
-    name                       = "userapi${var.env_name}${var.app_name}fa"
-    location                   = "WestUS"
+    name                       = "userapi-${var.app_name}fa-${var.env_name}"
+    location                   = "${data.azurerm_resource_group.rg.location}"
     resource_group_name        = "${data.azurerm_resource_group.rg.name}"
     app_service_plan_id        = "${data.azurerm_app_service_plan.plan.id}"
     storage_connection_string  = "${azurerm_storage_account.storage.primary_connection_string}"
