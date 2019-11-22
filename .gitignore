@@ -333,3 +333,5 @@ ASALocalRun/
 *.tfstate
 
 .vscode/
+
+.DS_Store
