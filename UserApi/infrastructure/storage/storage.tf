@@ -11,6 +11,10 @@ variable "env_name" {
   type = "string"
 }
 
+data "azurerm_resource_group" "rg" {
+  name     = "${var.app_name}-rg"
+}
+
 resource "azurerm_storage_account" "storage" {
   name                     = "userapiartifactstorage"
   resource_group_name      = "${data.azurerm_resource_group.rg.name}"
