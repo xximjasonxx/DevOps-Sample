@@ -56,7 +56,7 @@ resource "azurerm_function_app" "funcApp" {
     name                       = "${var.app_name}-userapi-${var.env_name}-funcapp"
     location                   = "WestUS"
     resource_group_name        = "${data.azurerm_resource_group.rg.name}"
-    app_service_plan_id        = "${azurerm_app_service_plan.plan.id}"
+    app_service_plan_id        = "${data.azurerm_app_service_plan.plan.id}"
     storage_connection_string  = "${azurerm_storage_account.storage.primary_connection_string}"
     version                    = "~2"
 
