@@ -38,7 +38,7 @@ data "azurerm_container_registry" "registry" {
 }
 
 resource "azurerm_function_app" "funcApp" {
-    name                       = "${var.app_name}-userapi-${var.env_name}-funcapp"
+    name                       = "userapi-${var.env_name}-${var.app-name}-funcapp"
     location                   = "WestUS"
     resource_group_name        = "${data.azurerm_resource_group.rg.name}"
     app_service_plan_id        = "${data.azurerm_app_service_plan.plan.id}"

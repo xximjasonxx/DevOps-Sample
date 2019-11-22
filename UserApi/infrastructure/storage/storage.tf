@@ -11,10 +11,6 @@ variable "app_name" {
   type = "string"
 }
 
-variable "env_name" {
-  type = "string"
-}
-
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
@@ -28,7 +24,7 @@ resource "azurerm_storage_account" "storage" {
 }
 
 resource "azurerm_storage_container" "storage" {
-  name                  = "userapi-${var.env_name}-artifacts"
+  name                  = "userapi-artifacts"
   storage_account_name  = "${azurerm_storage_account.storage.name}"
   container_access_type = "private"
 }
