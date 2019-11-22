@@ -19,10 +19,6 @@ variable "env_name" {
   type = "string"
 }
 
-variable "jwt_key" {
-  type = "string"
-}
-
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
@@ -37,7 +33,6 @@ resource "azurerm_storage_account" "storage" {
 
 resource "azurerm_storage_container" "storage" {
   name                  = "userapi-${var.env_name}-artifacts"
-  resource_group_name   = "${data.azurerm_resource_group.rg.name}"
   storage_account_name  = "${azurerm_storage_account.storage.name}"
   container_access_type = "private"
 }
