@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+variable "env_name" {
+  type = "string"
+}
+
 resource "azurerm_storage_account" "storage" {
   name                     = "userapiartifactstorage"
   resource_group_name      = "${data.azurerm_resource_group.rg.name}"
