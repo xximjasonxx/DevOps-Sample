@@ -11,6 +11,11 @@ variable "app_name" {
   type = "string"
 }
 
+variable "artifact_path" {
+  type = "string"
+}
+
+
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
@@ -29,4 +34,9 @@ resource "azurerm_storage_container" "storage" {
   container_access_type = "private"
 }
 
-# next need to create the blob
+resource "azurerm_storage_blob" "blob" {
+  name                    = "${basename(var.artifact_path)}"
+  storage_container_name  = "${azurerm_storage_container.storage.name}"
+  type                    = "Block"
+  source                  = "${var.artifact_path}"
+}
