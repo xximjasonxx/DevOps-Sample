@@ -18,6 +18,8 @@ stages:
           vmImage: 'ubuntu-latest'
         continueOnError: false
         steps:
+          - script: ls -l $(Build.SourcesDirectory)
+
           - task: DotNetCoreCLI@2
             displayName: Publish Service
             inputs:
