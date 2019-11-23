@@ -58,8 +58,8 @@ data "azurerm_storage_account_sas" "storage_sas" {
   file = false
  }
  
- start = "2019–11–21"
- expiry = "2028–03–21"
+ start = "2019-11-21"
+ expiry = "2028-03-21"
  
  permissions {
   read = true
