@@ -22,7 +22,7 @@ stages:
             displayName: Publish Service
             inputs:
               command: publish
-              arguments: -c Release -o output
+              arguments: -c Release -o $(Build.SourcesDirectory)/UserApi/output
               workingDirectory: $(Build.SourcesDirectory)/UserApi
               publishWebProjects: false
 
