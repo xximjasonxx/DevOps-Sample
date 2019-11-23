@@ -22,8 +22,9 @@ stages:
             displayName: Publish Service
             inputs:
               command: publish
-              projects: $(Build.SourcesDirectory)/UserApi/UserApi.csproj
-              arguments: -c Release -o $(Build.SourcesDirectory)/UsereApi/output
+              arguments: -c Release -o output
+              workingDirectory: $(Build.SourcesDirectory)/UserApi
+              publishWebProjects: false
 
           - task: ArchiveFiles@2
             displayName: Create Publishable Zip
