@@ -25,6 +25,7 @@ stages:
               arguments: -c Release -o $(Build.SourcesDirectory)/UserApi/output
               workingDirectory: $(Build.SourcesDirectory)/UserApi
               publishWebProjects: false
+              zipAfterPublish: false
 
           - task: ArchiveFiles@2
             displayName: Create Publishable Zip
