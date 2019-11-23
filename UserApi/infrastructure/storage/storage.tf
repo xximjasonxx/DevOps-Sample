@@ -36,6 +36,7 @@ resource "azurerm_storage_container" "storage" {
 
 resource "azurerm_storage_blob" "blob" {
   name                    = "${basename(var.artifact_path)}"
+  storage_account_name    = "${azurerm_storage_account.storage.name}"
   storage_container_name  = "${azurerm_storage_container.storage.name}"
   type                    = "Block"
   source                  = "${var.artifact_path}"
