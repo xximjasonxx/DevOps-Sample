@@ -40,10 +40,6 @@ data "azurerm_storage_account" "storage" {
   name = "userapiartifactstorage"
 }
 
-data "azurerm_storage_container" "container" {
-  name = "userapi-artifacts"
-}
-
 data "azurerm_storage_account_sas" "storage_sas" {
  connection_string = "${data.azurerm_storage_account.storage.primary_connection_string}"
  https_only = false
