@@ -18,15 +18,12 @@ stages:
           vmImage: 'ubuntu-latest'
         continueOnError: false
         steps:
-          - script: ls -l $(Build.SourcesDirectory)
-
           - task: DotNetCoreCLI@2
             displayName: Publish Service
             inputs:
               command: publish
-              projects: UserApi.csproj
-              arguments: -c Release -o output
-              workingDirectory: $(Build.SourcesDirectory)/UserApi
+              projects: $(Build.SourcesDirectory)/UserApi/UserApi.csproj
+              arguments: -c Release -o $(Build.SourcesDirectory)/UsereApi/output
 
           - task: ArchiveFiles@2
             displayName: Create Publishable Zip
