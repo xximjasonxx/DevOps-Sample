@@ -22,7 +22,8 @@ stages:
             displayName: Publish Service
             inputs:
               command: publish
-              arguments: -c Release -o $(Build.SourcesDirectory)/output
+              projects: UserApi.csproj
+              arguments: -c Release -o output
               workingDirectory: $(Build.SourcesDirectory)/UserApi
 
           - task: ArchiveFiles@2
@@ -31,7 +32,7 @@ stages:
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/userapi-$(Build.BuildId).zip
               includeRootFolder: false
-              rootFolderOrFile: $(Build.SourcesDirectory)/output
+              rootFolderOrFile: $(Build.SourcesDirectory)/UserApi/output
 
           - task: CopyFiles@2
             displayName: Copy Infrastructure Scripts
