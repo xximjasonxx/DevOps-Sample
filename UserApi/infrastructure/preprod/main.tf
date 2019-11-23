@@ -37,7 +37,8 @@ data "azurerm_app_service_plan" "plan" {
 }
 
 data "azurerm_storage_account" "storage" {
-  name = "userapiartifactstorage"
+  name                = "userapiartifactstorage"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
 data "azurerm_storage_account_sas" "storage_sas" {
