@@ -73,7 +73,7 @@ stages:
             inputs:
               command: restore
               restoreDirectory: $(Build.SourcesDirectory)/packages
-              projects: "**/*.csproj"
+              projects: "AuthApi*/*.csproj"
 
           - task: DotNetCoreCLI@2
             displayName: Execute Unit Tests
