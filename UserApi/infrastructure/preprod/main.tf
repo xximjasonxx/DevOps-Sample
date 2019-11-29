@@ -19,6 +19,15 @@ variable "env_name" {
   type = "string"
 }
 
+variable "image_name" {
+  type = "string"
+}
+
+variable "tag" {
+  type = "string"
+}
+
+
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
@@ -68,6 +77,6 @@ resource "azurerm_function_app" "funcApp" {
 
     site_config {
       always_on         = true
-      linux_fx_version  = "DOCKER|${data.azurerm_container_registry.registry.login_server}/testimage:v1.0.1"
+      linux_fx_version  = "DOCKER|${data.azurerm_container_registry.registry.login_server}/${var.image_name}:${var.tag}"
     }
 }
