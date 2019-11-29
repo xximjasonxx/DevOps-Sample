@@ -72,7 +72,7 @@ stages:
             inputs:
               command: restore
               restoreDirectory: $(Build.SourcesDirectory)/packages
-              projects: "UserApi*/*.csproj"
+              projects: "UserApi/*.csproj"
 
           - task: DotNetCoreCLI@2
             displayName: Execute Unit Tests
