@@ -1,14 +1,13 @@
-
 trigger:
   branches:
     include:
       - dev
   paths:
     include:
-      - AuthApi
-      - AuthApi.Tests
+      - UserApi
+      - UserApi.Tests
     exclude:
-      - AuthApi/authapi-buildspec.yml
+      - UserApi/userapi-buildspec.yml
 
 stages:
   - stage: build
@@ -30,10 +29,10 @@ stages:
             inputs:
               command: build
               containerRegistry: MovieAppRegistryConnection
-              repository: authapi-unchecked
+              repository: userapi-unchecked
               tags: $(Build.BuildId)
-              Dockerfile: AuthApi/Dockerfile
-          
+              Dockerfile: UserApi/Dockerfile
+
           - task: UsePythonVersion@0
             inputs:
               versionSpec: "3.6"
@@ -50,15 +49,15 @@ stages:
             inputs:
               command: push
               containerRegistry: MovieAppRegistryConnection
-              repository: authapi-unchecked
+              repository: userapi-unchecked
               tags: $(Build.BuildId)
 
           - task: AnchoreTask@1
             inputs:
               engineUrl: 'http://40.122.117.95:8228/v1'
               engineUser: 'testuser2'
-              enginePassword: '$(AnchoreEnginePassword)'
-              imageName: 'movieappwmpregistry.azurecr.io/authapi-unchecked:$(Build.BuildId)'
+              enginePassword: 'Password01!'
+              imageName: 'movieappwmpregistry.azurecr.io/userapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
 
@@ -73,20 +72,22 @@ stages:
             inputs:
               command: restore
               restoreDirectory: $(Build.SourcesDirectory)/packages
-              projects: "AuthApi/*.csproj"
+              projects: "UserApi/*.csproj"
 
           - task: DotNetCoreCLI@2
             displayName: Execute Unit Tests
             inputs:
               command: test
               arguments: --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-              workingDirectory: $(Build.SourcesDirectory)/AuthApi.Tests
+              workingDirectory: $(Build.SourcesDirectory)/UserApi.Tests
               restoreDirectory: $(Build.SourcesDirectory)/packages
+            enabled: false
 
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.cobertura.xml'
+            enabled: false
 
           - task: WhiteSource Bolt@19
             displayName: Whitesource Scan
@@ -105,27 +106,27 @@ stages:
             inputs:
               command: build
               containerRegistry: MovieAppRegistryConnection
-              repository: authapi
+              repository: userapi
               tags: $(Build.BuildId)
-              Dockerfile: AuthApi/Dockerfile
+              Dockerfile: UserApi/Dockerfile
 
           - task: Docker@2
             displayName: Push Final Image
             inputs:
               command: push
               containerRegistry: MovieAppRegistryConnection
-              repository: authapi
+              repository: userapi
               tags: $(Build.BuildId)
 
           - task: PublishBuildArtifacts@1
             displayName: Publish Infrastructure folder
             inputs:
               ArtifactName: Infra
-              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/infrastructure
+              PathtoPublish: $(Build.SourcesDirectory)/UserApi/infrastructure
 
           - task: PublishBuildArtifacts@1
             displayName: Publish Testing Files
             inputs:
               ArtifactName: Tests
-              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/testing  
-
+              PathtoPublish: $(Build.SourcesDirectory)/Api/testing
+            enabled: false
