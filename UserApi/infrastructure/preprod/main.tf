@@ -76,3 +76,7 @@ resource "azurerm_function_app" "funcApp" {
       linux_fx_version          = "DOCKER|${data.azurerm_container_registry.registry.login_server}/${var.image_name}:${var.tag}"
     }
 }
+
+output "funcapp_url" {
+  value = "https://${azurerm_app_service.authapi.default_hostname}"
+}
