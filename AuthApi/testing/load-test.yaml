@@ -1,7 +1,7 @@
 config:
   phases:
-    - duration: 60
-      arrivalRate: 7
+    - duration: 70
+      arrivalRate: 12
 
 scenarios:
   - flow:
@@ -9,4 +9,10 @@ scenarios:
         url: "/api/v1/login"
         json: 
           emailAddress: "validuser@test.com"
+          password: "password"
+
+    - post:
+        url: "/api/v1/user"
+        json:
+          emailAddress: "testuser{{$randomString()}}@test.com"
           password: "password"
