@@ -56,7 +56,7 @@ stages:
             inputs:
               engineUrl: 'http://40.122.117.95:8228/v1'
               engineUser: 'testuser2'
-              enginePassword: '$(AnchoreEnginePassword)'
+              enginePassword: 'Password01!'
               imageName: 'movieappwmpregistry.azurecr.io/userapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
