@@ -78,5 +78,5 @@ resource "azurerm_function_app" "funcApp" {
 }
 
 output "funcapp_url" {
-  value = "https://${azurerm_app_service.authapi.default_hostname}"
+  value = "https://${azurerm_function_app.funcApp.default_hostname}"
 }
