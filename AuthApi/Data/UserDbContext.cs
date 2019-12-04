@@ -11,7 +11,6 @@ namespace AuthApi.Data
     {
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
-            Database.SetCommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds);
         }
 
         public DbSet<User> Users { get; set; }
