@@ -11,7 +11,6 @@ variable "app_name" {
   type = "string"
 }
 
-
 variable "container_id" {
   type = "string"
 }
@@ -59,6 +58,7 @@ resource "azurerm_sql_database" "database" {
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
   location            = "${data.azurerm_resource_group.rg.location}"
   server_name         = "${azurerm_sql_server.sql.name}"
+  edition             = "Premium"
 
   tags = {
     environment = "${var.env_name}"
