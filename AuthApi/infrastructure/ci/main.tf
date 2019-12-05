@@ -29,7 +29,7 @@ data "azurerm_resource_group" "rg" {
 }
 
 data "azurerm_eventgrid_topic" "topic" {
-  "${var.app_name}-${var.env_name}-topic"
+  name = "${var.app_name}-${var.env_name}-topic"
 }
 
 data "azurerm_container_registry" "registry" {
