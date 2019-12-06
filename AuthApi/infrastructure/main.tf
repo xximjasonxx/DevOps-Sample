@@ -59,7 +59,7 @@ resource "azurerm_sql_database" "database" {
 }
 
 data "azurerm_app_service_plan" "plan" {
-  name                = "${var.app_name}-${env_name}-ConsumptionPlan"
+  name                = "${var.app_name}-${var.env_name}-ConsumptionPlan"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
