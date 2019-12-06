@@ -29,6 +29,46 @@ resource "azurerm_eventgrid_topic" "topic" {
     }
 }
 
+resource "azurerm_sql_server" "sql" {
+  name                          = "${var.app_name}-${var.env_name}-sqlserver"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  location                      = "${data.azurerm_resource_group.rg.location}"  
+  version                       = "12.0"
+  administrator_login           = "${var.env_name}-admin"
+  administrator_login_password  = "Password01!"
+
+  tags = {
+    environment = "${var.env_name}"
+  }
+}
+
+resource "azurerm_sql_firewall_rule" "firewall" {
+  name                = "${var.app_name}-${var.env_name}-sqlserver-azure-fw-rule"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  server_name         = "${azurerm_sql_server.sql.name}"
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
+resource "azurerm_application_insights" "insights" {
+  name                          = "${var.app_name}-${var.env_name}-insights"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  location                      = "${data.azurerm_resource_group.rg.location}"
+  application_type              = "web"
+}
+
+resource "azurerm_app_service_plan" "plan" {
+  name                = "${var.app_name}-${var.env_name}-ConsumptionPlan"
+  location            = "${data.azurerm_resource_group.rg.location}"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  kind                = "Linux"
+  reserved            = true
+  sku {
+    tier = "${var.env_name == "prod" || var.env_name == "metric" ? "Standard" : "Basic"}"
+    size = "${var.env_name == "prod" || var.env_name == "metric" ? "S1" : "B1"}"
+  }
+}
+
 output "topic_access_key" {
   value = "${azurerm_eventgrid_topic.topic.primary_access_key}"
 }
