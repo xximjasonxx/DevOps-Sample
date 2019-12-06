@@ -37,10 +37,6 @@ data "azurerm_resource_group" "rg" {
   name = "${var.app_name}-rg"
 }
 
-data "azurerm_eventgrid_topic" "topic" {
-  name = "${var.app_name}-${var.env_name}-topic"
-}
-
 data "azurerm_container_registry" "registry" {
   name = "${var.app_name}registry"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
@@ -106,8 +102,8 @@ resource "azurerm_app_service" "authapi" {
     JwtAudience                     = "${var.app_name}-${var.env_name}"
     APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.insights.instrumentation_key}"
     ASPNETCORE_ENVIRONMENT          = "${var.env_name}"
-    EventTopicEndpoint              = "${data.azurerm_eventgrid_topic.endpoint}"
-    EventTopicAccessKey             = "${data.azurerm_eventgrid_topic.primary_access_key}"
+    EventTopicEndpoint              = "${var.eg_topic_endpoint}"
+    EventTopicAccessKey             = "${var.eg_access_key}"
   }
 
   site_config {
