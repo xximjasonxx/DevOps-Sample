@@ -24,6 +24,15 @@ variable "jwt_key" {
   type = "string"
 }
 
+variable "eg_topic_endpoint" {
+  type = "string"
+}
+
+variable "eg_access_key" {
+  type = "string" 
+}
+
+
 data "azurerm_resource_group" "rg" {
   name = "${var.app_name}-rg"
 }
