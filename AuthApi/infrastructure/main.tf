@@ -79,7 +79,8 @@ resource "azurerm_app_service" "authapi" {
     DOCKER_REGISTRY_SERVER_URL      = "${data.azurerm_container_registry.registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
     DOCKER_REGISTRY_SERVER_PASSWORD = "${data.azurerm_container_registry.registry.admin_password}"
-    ConnectionString                = "Server=${azurerm_sql_server.sql.fully_qualified_domain_name};Database=${azurerm_sql_database.database.name};User Id=${azurerm_sql_server.sql.administrator_login};Password=${azurerm_sql_server.sql.administrator_login_password};MultipleActiveResultSets=True;Connection Timeout=60",    JwtKey                          = "${var.jwt_key}"
+    ConnectionString                = "Server=${data.azurerm_sql_server.sql.fully_qualified_domain_name};Database=${data.azurerm_sql_database.database.name};User Id=${data.azurerm_sql_server.sql.administrator_login};Password=${data.azurerm_sql_server.sql.administrator_login_password};MultipleActiveResultSets=True;Connection Timeout=60",
+    JwtKey                          = "${var.jwt_key}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
     APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.insights.instrumentation_key}"
