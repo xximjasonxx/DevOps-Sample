@@ -83,7 +83,7 @@ resource "azurerm_app_service" "authapi" {
     JwtKey                          = "${var.jwt_key}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
-    APPINSIGHTS_INSTRUMENTATIONKEY  = "${azurerm_application_insights.insights.instrumentation_key}"
+    APPINSIGHTS_INSTRUMENTATIONKEY  = "${data.azurerm_application_insights.insights.instrumentation_key}"
     ASPNETCORE_ENVIRONMENT          = "${var.env_name}"
     EventTopicEndpoint              = "${var.eg_topic_endpoint}"
     EventTopicAccessKey             = "${var.eg_access_key}"
