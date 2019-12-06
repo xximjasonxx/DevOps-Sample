@@ -28,3 +28,11 @@ resource "azurerm_eventgrid_topic" "topic" {
         environment = "${var.env_name}"
     }
 }
+
+output "topic_access_key" {
+  value = "${azurerm_eventgrid_topic.topic.primary_access_key}"
+}
+
+output "topic_endpoint" {
+  value = "${azurerm_eventgrid_topic.topic.endpoint}"
+}
