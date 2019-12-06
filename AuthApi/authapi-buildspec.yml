@@ -4,11 +4,9 @@ trigger:
     include:
       - dev
   paths:
-    include:
-      - AuthApi
-      - AuthApi.Tests
     exclude:
-      - AuthApi/authapi-buildspec.yml
+      - UserApi
+      - UserApi.Tests
 
 stages:
   - stage: build
