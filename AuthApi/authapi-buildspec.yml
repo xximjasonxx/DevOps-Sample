@@ -94,7 +94,7 @@ stages:
               cwd: '$(Build.SourcesDirectory)/packages'
 
   - stage: push
-    displayName: Push Infrastructure Scripts
+    displayName: Push Final Image
     dependsOn: 'build'
     jobs:
       - job: push
