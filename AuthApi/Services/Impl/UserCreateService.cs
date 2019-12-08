@@ -3,6 +3,7 @@ using AuthApi.Data;
 using AuthApi.Data.Entities;
 using AuthApi.Ex;
 using AuthApi.Providers;
+using Common.EventModels;
 
 namespace AuthApi.Services.Impl
 {
@@ -11,13 +12,15 @@ namespace AuthApi.Services.Impl
         private readonly IUserDbContext _userDbContext;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IGetUserProvider _getUserProvider;
+        private readonly IPublishEventService _publishEventService;
 
         public UserCreateService(IUserDbContext userDbContext, IPasswordHasher passwordHasher,
-            IGetUserProvider getUserProvider)
+            IGetUserProvider getUserProvider, IPublishEventService publishEventService)
         {
             _userDbContext = userDbContext;
             _passwordHasher = passwordHasher;
             _getUserProvider = getUserProvider;
+            _publishEventService = publishEventService;
         }
 
         public async Task<User> CreateUser(string emailAddress, string password)
@@ -34,6 +37,15 @@ namespace AuthApi.Services.Impl
 
             await _userDbContext.Users.AddAsync(newUser);
             await _userDbContext.SaveChangesAsync();
+
+            // todo: add real values
+            await _publishEventService.PublishUserCreateEventAsync(new UserCreatedEvent
+            {
+                UserId = newUser.Id,
+                Username = "testuser1",
+                FirstName = "FirstName",
+                LastName = "LastName"
+            });
 
             return newUser;
         }
