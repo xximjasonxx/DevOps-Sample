@@ -8,5 +8,7 @@ namespace AuthApi.Providers
          Task<User> GetUserByAuthenticationCredentials(string emailAddress, string password);
 
          Task<User> GetUserByEmailAddress(string emailAddress);
+
+         Task<User> GetUserByUsername(string username);
     }
 }

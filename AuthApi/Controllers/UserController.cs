@@ -15,13 +15,15 @@ namespace AuthApi.Controllers
         private readonly IUserCreateService _userCreateService;
         private readonly ICreateTokenService _createTokenService;
         private readonly ITelemetryService _telemetryService;
+        private readonly IPublishEventService _publishEventService;
 
         public UserController(IUserCreateService userCreateService, ICreateTokenService createTokenService,
-            ITelemetryService telemetryService)
+            ITelemetryService telemetryService, IPublishEventService publishEventService)
         {
             _userCreateService = userCreateService;
             _createTokenService = createTokenService;
             _telemetryService = telemetryService;
+            _publishEventService = publishEventService;
         }
 
         [HttpPost]
@@ -33,11 +35,19 @@ namespace AuthApi.Controllers
                 var webToken = _createTokenService.CreateToken(user);
 
                 _telemetryService.TrackEvent("User Created");
+                await _publishEventService.PublishUserCreateEventAsync(new UserCreatedEvent
+                {
+                    UserId = user.Id,
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                });
+
                 return Created(string.Empty, webToken);
             }
-            catch (DuplicateUserException)
+            catch (DuplicateUserException dex)
             {
-                return Conflict("Email address is already in use");
+                return Conflict(dex.Message);
             }
         }
     }
