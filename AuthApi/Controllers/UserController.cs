@@ -5,6 +5,7 @@ using AuthApi.Models;
 using AuthApi.Services;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
+using Common.EventModels;
 
 namespace AuthApi.Controllers
 {
@@ -31,7 +32,7 @@ namespace AuthApi.Controllers
         {
             try
             {
-                var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password);
+                var user = await _userCreateService.CreateUser(request.EmailAddress, request.Password, request.Username);
                 var webToken = _createTokenService.CreateToken(user);
 
                 _telemetryService.TrackEvent("User Created");
@@ -39,8 +40,8 @@ namespace AuthApi.Controllers
                 {
                     UserId = user.Id,
                     Username = user.Username,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
+                    FirstName = request.FirstName,
+                    LastName = request.LastName
                 });
 
                 return Created(string.Empty, webToken);
