@@ -13,7 +13,7 @@ namespace UserApi.Functions
     public static class PingFunction
     {
         [FunctionName("PingFunction")]
-        public static async Task<IActionResult> Run(
+        public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/ping")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
