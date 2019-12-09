@@ -1,7 +1,7 @@
 
 using System;
 
-namespace Common.EventModels
+namespace AuthApi.Models
 {
     public class UserCreatedEvent
     {

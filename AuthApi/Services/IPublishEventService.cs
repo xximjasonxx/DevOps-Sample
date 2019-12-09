@@ -1,7 +1,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Common.EventModels;
+using AuthApi.Models;
 
 namespace AuthApi.Services
 {

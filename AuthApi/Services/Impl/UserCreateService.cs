@@ -3,7 +3,6 @@ using AuthApi.Data;
 using AuthApi.Data.Entities;
 using AuthApi.Ex;
 using AuthApi.Providers;
-using Common.EventModels;
 
 namespace AuthApi.Services.Impl
 {

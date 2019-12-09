@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Common.EventModels;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Extensions.Configuration;
+using AuthApi.Models;
 
 namespace AuthApi.Services.Impl
 {

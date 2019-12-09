@@ -2,10 +2,10 @@ using AuthApi.Controllers;
 using AuthApi.Data.Entities;
 using AuthApi.Ex;
 using AuthApi.Services;
+using AuthApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
-using Common.EventModels;
 using System.Threading.Tasks;
 
 namespace AuthApi.Tests.Controllers

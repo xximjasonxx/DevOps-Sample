@@ -5,7 +5,6 @@ using AuthApi.Models;
 using AuthApi.Services;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
-using Common.EventModels;
 
 namespace AuthApi.Controllers
 {
