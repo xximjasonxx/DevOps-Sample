@@ -31,7 +31,7 @@ namespace AuthApi.Tests.Services
 
             // act
             // assert
-            Assert.ThrowsAsync<DuplicateUserException>(() => service.CreateUser("test@aol.com", "test"));
+            Assert.ThrowsAsync<DuplicateUserException>(() => service.CreateUser("test@aol.com", "test", "test"));
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace AuthApi.Tests.Services
             );
 
             // act
-            service.CreateUser("test@aol.com", "test").GetAwaiter().GetResult();
+            service.CreateUser("test@aol.com", "test", "test").GetAwaiter().GetResult();
 
             // assert
             passwordHasherMock.Verify(x => x.HashPassword("test"), Times.Once);
@@ -82,10 +82,34 @@ namespace AuthApi.Tests.Services
             );
 
             // act
-            service.CreateUser("test@aol.com", "test").GetAwaiter().GetResult();
+            service.CreateUser("test@aol.com", "test", "test").GetAwaiter().GetResult();
 
             // assert
             userDbContextMock.Verify(x => x.Users.AddAsync(It.Is<User>(x1 => x1.EmailAddress == "test@aol.com"), default(CancellationToken)), Times.Once);
+        }
+
+        [Fact]
+        public void GiventRequestToCreateUser_VerifyDuplicateUsernameThrowsException()
+        {
+            // arrange
+            var getUserProviderMock = new Mock<IGetUserProvider>();
+            getUserProviderMock.Setup(x => x.GetUserByUsername(It.IsAny<string>())).Returns(Task.FromResult(new User()));
+            getUserProviderMock.Setup(x => x.GetUserByEmailAddress(It.IsAny<string>())).Returns(Task.FromResult<User>(null));
+
+            var usersDbSetMock = new Mock<DbSet<User>>();
+            var userDbContextMock = new Mock<IUserDbContext>();
+            userDbContextMock.Setup(x => x.Users)
+                .Returns(usersDbSetMock.Object);
+
+            var service = new UserCreateService(
+                userDbContextMock.Object,
+                new Mock<IPasswordHasher>().Object,
+                getUserProviderMock.Object
+            );
+
+            // act
+            // assert
+            Assert.ThrowsAsync<DuplicateUserException>(() => service.CreateUser("test@aol.com", "test", "test"));
         }
     }
 }

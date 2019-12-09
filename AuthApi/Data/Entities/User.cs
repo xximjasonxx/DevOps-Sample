@@ -13,6 +13,9 @@ namespace AuthApi.Data.Entities
         [StringLength(100)]
         public string EmailAddress { get; set; }
 
+        [StringLength(100)]
+        public string Username { get; set; }
+
         [StringLength(255)]
         public string Password { get; set; }
     }

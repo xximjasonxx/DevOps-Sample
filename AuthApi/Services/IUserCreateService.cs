@@ -5,6 +5,6 @@ namespace AuthApi.Services
 {
     public interface IUserCreateService
     {
-         Task<User> CreateUser(string emailAddress, string password);
+         Task<User> CreateUser(string emailAddress, string password, string username);
     }
 }

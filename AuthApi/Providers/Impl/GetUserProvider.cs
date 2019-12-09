@@ -35,5 +35,10 @@ namespace AuthApi.Providers.Impl
         {
             return await _userDbContext.Users.FirstOrDefaultAsync(x => x.EmailAddress == emailAddress);
         }
+
+        public async Task<User> GetUserByUsername(string username)
+        {
+            return await _userDbContext.Users.FirstOrDefaultAsync(x => x.Username == username);
+        }
     }
 }

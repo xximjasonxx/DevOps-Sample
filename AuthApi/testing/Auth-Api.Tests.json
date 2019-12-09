@@ -34,12 +34,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"emailAddress\": \"createdUser@test.com\",\n\t\"password\": \"tester\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"emailAddress\": \"createdUser@test.com\",\n\t\"password\": \"tester\",\n\t\"username\": \"createdUser\",\n\t\"firstName\": \"firstName\",\n\t\"lastName\": \"lastName\"\n}"
 						},
 						"url": {
 							"raw": "https://{{host}}/api/v1/user",
@@ -57,7 +52,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Duplicate User",
+					"name": "Create Duplicate User (Email)",
 					"event": [
 						{
 							"listen": "test",
@@ -82,12 +77,51 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"emailAddress\": \"duplicateuser@test.com\",\n\t\"password\": \"does not matter\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"raw": "{\n\t\"emailAddress\": \"duplicateuser@test.com\",\n\t\"password\": \"does not matter\",\n\t\"username\": \"doesNotMatter\",\n\t\"firstName\": \"firstName\",\n\t\"lastName\": \"lastName\"\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v1/user",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						},
+						"description": "This context is based on a user we assume exists thanks to seeding"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Duplicate User (Username)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba1ef991-edc0-40a1-82aa-8181952fe2b9",
+								"exec": [
+									"tests[\"Create Duplicate User response code is 409\"] = responseCode.code === 409;"
+								],
+								"type": "text/javascript"
 							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"emailAddress\": \"normaluser@test.com\",\n\t\"password\": \"does not matter\",\n\t\"username\": \"duplicateUser\",\n\t\"firstName\": \"firstName\",\n\t\"lastName\": \"lastName\"\n}"
 						},
 						"url": {
 							"raw": "https://{{host}}/api/v1/user",
@@ -131,12 +165,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"emailAddress\": \"validuser@test.com\",\n\t\"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"emailAddress\": \"validuser@test.com\",\n\t\"password\": \"password\"\n}"
 						},
 						"url": {
 							"raw": "https://{{host}}/api/v1/login",
@@ -179,12 +208,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"emailAddress\": \"baduser@test.com\",\n\t\"password\": \"wrong_password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n\t\"emailAddress\": \"baduser@test.com\",\n\t\"password\": \"wrong_password\"\n}"
 						},
 						"url": {
 							"raw": "https://{{host}}/api/v1/login",
