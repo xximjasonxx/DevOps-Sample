@@ -80,8 +80,7 @@ resource "azurerm_function_app" "funcApp" {
 resource "azurerm_eventgrid_event_subscription" "default" {
   name                  = "userCreated-${var.env_name}-subscription"
   scope                 = "${data.azurerm_resource_group.rg.id}"
-  event_elivery_schema  = "EventGridSchema"
-
+  event_delivery_schema  = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
 
   webhook_endpoint {
