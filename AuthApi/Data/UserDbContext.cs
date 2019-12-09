@@ -25,14 +25,16 @@ namespace AuthApi.Data
             {
                 Id = Guid.NewGuid(),
                 EmailAddress = "duplicateuser@test.com",
-                Password = new Rfc2898DeriveBytesPasswordHasher().HashPassword("password")
+                Password = new Rfc2898DeriveBytesPasswordHasher().HashPassword("password"),
+                Username = "duplicateUser"
             });
 
             await Users.AddAsync(new User
             {
                 Id = Guid.NewGuid(),
                 EmailAddress = "validuser@test.com",
-                Password = new Rfc2898DeriveBytesPasswordHasher().HashPassword("password")
+                Password = new Rfc2898DeriveBytesPasswordHasher().HashPassword("password"),
+                Username = "validuser"
             });
 
             await SaveChangesAsync();

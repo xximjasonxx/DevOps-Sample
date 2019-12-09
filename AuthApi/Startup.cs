@@ -30,8 +30,6 @@ namespace AuthApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine($"'{Configuration["ConnectionString"]}'");
-
             services.AddDbContext<IUserDbContext, UserDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration["ConnectionString"]);
