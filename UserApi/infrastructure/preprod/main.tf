@@ -80,11 +80,12 @@ resource "azurerm_function_app" "funcApp" {
 resource "azurerm_eventgrid_event_subscription" "default" {
   name                  = "userCreated-${var.env_name}-subscription"
   scope                 = "${data.azurerm_resource_group.rg.id}"
-  event_delivery_schema  = "EventGridSchema"
+  event_delivery_schema = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
+  topic_name            = "${var.app_name}-${var.env_name}-topic"
 
   webhook_endpoint {
-    url = "https://${azurerm_function_app.funcApp.default_hostname}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=JMZ0R2zp4qxQdXCPPX4qZ39RM2bQ3kzVj7XFBGvU57uLi8Sl5izMWw=="
+    url = "https://${azurerm_function_app.funcApp.default_hostname}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=WeKFE2ZYxzmWm3a7u9jlHdYjNRAbI2RSyaq0cDKpGIxjwYKpdiN6aw=="
   }
 }
 
