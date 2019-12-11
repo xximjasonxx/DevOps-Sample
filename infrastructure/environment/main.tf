@@ -76,7 +76,3 @@ output "topic_access_key" {
 output "topic_endpoint" {
   value = "${azurerm_eventgrid_topic.topic.endpoint}"
 }
-
-output "topic_id" {
-  value = "${azurerm_eventgrid_topic.topic.id}"
-}
