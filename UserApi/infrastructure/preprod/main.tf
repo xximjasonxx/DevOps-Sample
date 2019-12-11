@@ -57,11 +57,6 @@ data "azurerm_container_registry" "registry" {
   resource_group_name   = "${data.azurerm_resource_group.rg.name}"
 }
 
-data "azurerm_eventgrid_topic" "topic" {
-  name                = "${var.app_name}-${var.env_name}-topic"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-}
-
 resource "azurerm_function_app" "funcApp" {
     name                       = "userapi-${var.app_name}fa-${var.env_name}"
     location                   = "${data.azurerm_resource_group.rg.location}"
