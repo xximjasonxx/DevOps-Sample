@@ -23,6 +23,11 @@ variable "tag" {
   type = "string"
 }
 
+variable "topic_id" {
+  type = "string"
+}
+
+
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
@@ -78,7 +83,7 @@ resource "azurerm_function_app" "funcApp" {
 
 resource "azurerm_eventgrid_event_subscription" "default" {
   name                  = "userCreated-${var.env_name}-subscription"
-  scope                 = "${data.azurerm_resource_group.rg.id}"
+  scope                 = "${var.topic_id}"
   event_delivery_schema = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
   topic_name            = "${var.app_name}-${var.env_name}-topic"
