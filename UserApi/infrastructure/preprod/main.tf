@@ -86,7 +86,6 @@ resource "azurerm_eventgrid_event_subscription" "default" {
   scope                 = "${var.topic_id}"
   event_delivery_schema = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
-  topic_name            = "${var.app_name}-${var.env_name}-topic"
 
   webhook_endpoint {
     url = "https://${azurerm_function_app.funcApp.default_hostname}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=ym1ucbxkjnA3RiZnXg1wxFQly1IM9Zu7oyOtFqPagQKAwHKJwKAkug=="
