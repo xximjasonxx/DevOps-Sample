@@ -84,7 +84,7 @@ resource "azurerm_eventgrid_event_subscription" "default" {
   topic_name            = "${var.app_name}-${var.env_name}-topic"
 
   webhook_endpoint {
-    url = "https://${azurerm_function_app.funcApp.default_hostname}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=WeKFE2ZYxzmWm3a7u9jlHdYjNRAbI2RSyaq0cDKpGIxjwYKpdiN6aw=="
+    url = "https://${azurerm_function_app.funcApp.default_hostname}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=ym1ucbxkjnA3RiZnXg1wxFQly1IM9Zu7oyOtFqPagQKAwHKJwKAkug=="
   }
 }
 
