@@ -118,6 +118,13 @@ stages:
               repository: userapi
               tags: $(Build.BuildId)
 
+  - stage: publish
+    displayName: Publish Artifacts
+    dependsOn: 'push'
+    jobs:
+      - job: publish
+        displayName: Publish Infrastructure
+        steps:
           - task: PublishBuildArtifacts@1
             displayName: Publish Infrastructure folder
             inputs:
@@ -128,5 +135,11 @@ stages:
             displayName: Publish Testing Files
             inputs:
               ArtifactName: Tests
-              PathtoPublish: $(Build.SourcesDirectory)/Api/testing
+              PathtoPublish: $(Build.SourcesDirectory)/UserApi/testing
             enabled: false
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Environment Infra
+            inputs:
+              ArtifactName: EnvInfra
+              PathtoPublish: $(Build.SourcesDirectory)/infrastructure/environment
