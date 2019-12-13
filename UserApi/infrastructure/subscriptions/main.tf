@@ -23,9 +23,8 @@ variable "masterKey" {
   type = "string"
 }
 
-
 resource "azurerm_eventgrid_event_subscription" "default" {
-  name                  = "userCreated-${var.env_name}-subscription"
+  name                  = "userapi-userCreated-${var.env_name}-subscription"
   scope                 = "${var.topic_id}"
   event_delivery_schema = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
