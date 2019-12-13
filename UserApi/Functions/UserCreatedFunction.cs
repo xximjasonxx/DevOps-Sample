@@ -10,7 +10,7 @@ namespace UserApi.Functions
         [FunctionName("UserCreatedFunction")]
         public static void Run([EventGridTrigger]JObject eventObject, ILogger logger)
         {
-            log.LogInformation("UserCreated Event Received by UserApi");
+            logger.LogInformation("UserCreated Event Received by UserApi");
         }
     }
 }
