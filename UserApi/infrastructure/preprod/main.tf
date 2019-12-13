@@ -23,10 +23,6 @@ variable "tag" {
   type = "string"
 }
 
-variable "topic_id" {
-  type = "string"
-}
-
 
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
@@ -80,17 +76,6 @@ resource "azurerm_function_app" "funcApp" {
       linux_fx_version          = "DOCKER|${data.azurerm_container_registry.registry.login_server}/${var.image_name}:${var.tag}"
     }
 }
-
-#resource "azurerm_eventgrid_event_subscription" "default" {
-#  name                  = "userCreated-${var.env_name}-subscription"
-#  scope                 = "${var.topic_id}"
-#  event_delivery_schema = "EventGridSchema"
-#  included_event_types  = [ "UserCreatedEvent" ]
-#
-#  webhook_endpoint {
-#    url = "https://${azurerm_function_app.funcApp.default_hostname}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=JMZ0R2zp4qxQdXCPPX4qZ39RM2bQ3kzVj7XFBGvU57uLi8Sl5izMWw=="
-#  }
-#}
 
 output "funcapp_url" {
   value = "https://${azurerm_function_app.funcApp.default_hostname}"
