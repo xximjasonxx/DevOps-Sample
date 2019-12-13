@@ -31,6 +31,6 @@ resource "azurerm_eventgrid_event_subscription" "default" {
   included_event_types  = [ "UserCreatedEvent" ]
 
   webhook_endpoint {
-    url = "https://${var.app_url}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=${var.masterKey}"
+    url = "${var.app_url}/runtime/webhooks/EventGrid?functionName=UserCreatedFunction&code=${var.masterKey}"
   }
 }
