@@ -2,11 +2,19 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
+using UserApi.Data;
 
 namespace UserApi.Functions
 {
-    public static class UserCreatedFunction
+    public class UserCreatedFunction
     {
+        private readonly IUserDbContext _userDbContext;
+
+        public UserCreatedFunction(IUserDbContext userDbContext)
+        {
+            _userDbContext = userDbContext;
+        }
+        
         [FunctionName("UserCreatedFunction")]
         public static void Run([EventGridTrigger]JObject eventObject, ILogger logger)
         {
