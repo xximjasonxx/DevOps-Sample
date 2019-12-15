@@ -1,4 +1,5 @@
 
+using System;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -14,8 +15,7 @@ namespace UserApi.Data
         {
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("local.settings.json")
-                .AddEnvironmentVariables()
+                .AddJsonFile("local.settings.json", optional: false)
                 .Build();
         }
 
