@@ -19,6 +19,7 @@ namespace UserApi.Functions
         public static void Run([EventGridTrigger]JObject eventObject, ILogger logger)
         {
             logger.LogInformation("UserCreated Event Received by UserApi");
+            logger.LogInformation(eventObject.ToString());
         }
     }
 }
