@@ -24,10 +24,10 @@ namespace UserApi
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddDbContext<IUserDbContext, UserDbContext>(opts =>
+            /*builder.Services.AddDbContext<IUserDbContext, UserDbContext>(opts =>
             {
                 opts.UseSqlServer(_configuration["ConnectionString"]);
-            });
+            });*/
         }
     }
 }
