@@ -28,6 +28,16 @@ data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
 
+data "azurerm_sql_server" "sql" {
+  name                          = "${var.app_name}-${var.env_name}-sqlserver"
+  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+}
+
+data "azurerm_container_registry" "registry" {
+  name                  = "${var.app_name}registry"
+  resource_group_name   = "${data.azurerm_resource_group.rg.name}"
+}
+
 resource "azurerm_storage_account" "storage" {
   name                     = "userapi${var.env_name}storage"
   resource_group_name      = "${data.azurerm_resource_group.rg.name}"
@@ -49,9 +59,15 @@ resource "azurerm_app_service_plan" "plan" {
   }
 }
 
-data "azurerm_container_registry" "registry" {
-  name                  = "${var.app_name}registry"
-  resource_group_name   = "${data.azurerm_resource_group.rg.name}"
+resource "azurerm_sql_database" "database" {
+  name                = "${var.app_name}-user-db"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  location            = "${data.azurerm_resource_group.rg.location}"
+  server_name         = "${data.azurerm_sql_server.sql.name}"
+
+  tags = {
+    environment = "${var.env_name}"
+  }
 }
 
 resource "azurerm_function_app" "funcApp" {
@@ -69,6 +85,7 @@ resource "azurerm_function_app" "funcApp" {
         DOCKER_REGISTRY_SERVER_USERNAME           = "${data.azurerm_container_registry.registry.admin_username}"
         DOCKER_REGISTRY_SERVER_PASSWORD           = "${data.azurerm_container_registry.registry.admin_password}"
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
+        ConnectionString                          = "Server=${data.azurerm_sql_server.sql.fqdn};Database=${azurerm_sql_database.database.name};User Id=${data.azurerm_sql_server.sql.administrator_login};Password=Password01!;MultipleActiveResultSets=True;Connection Timeout=60"
     }
 
     site_config {
