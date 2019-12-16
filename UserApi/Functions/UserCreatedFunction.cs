@@ -10,9 +10,9 @@ namespace UserApi.Functions
     {
         private readonly IUserDbContext _userDbContext;
 
-        public UserCreatedFunction(IUserDbContext userDbContext)
+        public UserCreatedFunction()
         {
-            _userDbContext = userDbContext;
+            //_userDbContext = userDbContext;
         }
         
         [FunctionName("UserCreatedFunction")]
