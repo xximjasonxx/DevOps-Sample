@@ -13,11 +13,8 @@ namespace UserApi.Functions
 {
     public class PingFunction
     {
-        private readonly IUserDbContext _userDbContext;
-
-        public PingFunction(IUserDbContext userDbContext)
+        public PingFunction()
         {
-            _userDbContext = userDbContext;
         }
 
         [FunctionName("PingFunction")]

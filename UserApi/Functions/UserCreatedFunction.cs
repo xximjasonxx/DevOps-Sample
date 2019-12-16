@@ -8,7 +8,7 @@ namespace UserApi.Functions
 {
     public class UserCreatedFunction
     {
-        private readonly IUserDbContext _userDbContext;
+        //private readonly IUserDbContext _userDbContext;
 
         public UserCreatedFunction()
         {

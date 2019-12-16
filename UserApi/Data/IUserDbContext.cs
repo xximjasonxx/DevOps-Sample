@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace UserApi.Data
 {
-    public interface IUserDbContext
+    /*public interface IUserDbContext
     {
         DatabaseFacade Database { get; }
         DbSet<User> Users { get; }
 
         Task<int> SaveChangesAsync(CancellationToken token = default(CancellationToken));
-    }
+    }*/
 }
