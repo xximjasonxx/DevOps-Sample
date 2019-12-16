@@ -15,7 +15,7 @@ namespace UserApi.Data
         {
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("local.settings.json")
+                .AddJsonFile("local.settings.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
         }
