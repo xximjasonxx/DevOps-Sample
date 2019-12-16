@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace UserApi.Data
 {
-    /*public class UserDbContext : DbContext, IUserDbContext
+    public class UserDbContext : DbContext, IUserDbContext
     {
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
@@ -11,5 +11,5 @@ namespace UserApi.Data
         }
 
         public DbSet<User> Users { get; set; }
-    }*/
+    }
 }

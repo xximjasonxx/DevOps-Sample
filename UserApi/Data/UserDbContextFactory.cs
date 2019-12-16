@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace UserApi.Data
 {
-    /*public class UserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
+    public class UserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
     {
         private readonly IConfiguration _configuration;
 
@@ -15,7 +15,8 @@ namespace UserApi.Data
         {
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("local.settings.json", optional: false)
+                .AddJsonFile("local.settings.json")
+                .AddEnvironmentVariables()
                 .Build();
         }
 
@@ -26,5 +27,5 @@ namespace UserApi.Data
 
             return new UserDbContext(optionsBuilder.Options);
         }
-    }*/
+    }
 }
