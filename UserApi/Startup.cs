@@ -15,11 +15,11 @@ namespace UserApi
 
         public Startup()
         {
-            _configuration = new ConfigurationBuilder()
+            /*_configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("local.settings.json")
                 .AddEnvironmentVariables()
-                .Build();
+                .Build();*/
         }
 
         public override void Configure(IFunctionsHostBuilder builder)
