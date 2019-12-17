@@ -53,7 +53,7 @@ stages:
 
           - task: AnchoreTask@1
             inputs:
-              engineUrl: 'http://168.61.214.198:8228/v1'
+              engineUrl: 'http://40.122.66.221:8228/v1'
               engineUser: 'wmpUser'
               enginePassword: '$(AnchoreEnginePassword)'
               imageName: 'movieappwmpregistry.azurecr.io/authapi-unchecked:$(Build.BuildId)'

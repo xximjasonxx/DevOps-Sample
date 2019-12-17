@@ -22,8 +22,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="echo $(TargetDir)" />
-    <Exec Command="echo $(ProjectName)" />
     <Exec Command="cp $(TargetDir)bin/$(ProjectName).dll $(TargetDir)$(ProjectName).dll" />
   </Target>
 
