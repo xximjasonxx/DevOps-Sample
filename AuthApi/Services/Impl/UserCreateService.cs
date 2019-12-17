@@ -33,7 +33,8 @@ namespace AuthApi.Services.Impl
             var newUser = new User
             {
                 EmailAddress = emailAddress,
-                Password = _passwordHasher.HashPassword(password)
+                Password = _passwordHasher.HashPassword(password),
+                Username = username
             };
 
             await _userDbContext.Users.AddAsync(newUser);

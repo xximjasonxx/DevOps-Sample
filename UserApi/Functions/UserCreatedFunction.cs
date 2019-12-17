@@ -3,23 +3,30 @@ using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Logging;
 using UserApi.Data;
+using Microsoft.Azure.EventGrid.Models;
+using UserApi.Data.Entities;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace UserApi.Functions
 {
     public class UserCreatedFunction
     {
-        //private readonly IUserDbContext _userDbContext;
+        private readonly IUserDbContext _userDbContext;
 
-        public UserCreatedFunction()
+        public UserCreatedFunction(IUserDbContext userDbContext)
         {
-            //_userDbContext = userDbContext;
+            _userDbContext = userDbContext;
         }
         
         [FunctionName("UserCreatedFunction")]
-        public static void Run([EventGridTrigger]JObject eventObject, ILogger logger)
+        public async Task Run([EventGridTrigger]EventGridEvent eventData, ILogger logger)
         {
             logger.LogInformation("UserCreated Event Received by UserApi");
-            logger.LogInformation(eventObject.ToString());
+            var user = JsonConvert.DeserializeObject<User>(eventData.Data.ToString());
+
+            await _userDbContext.Users.AddAsync(user);
+            await _userDbContext.SaveChangesAsync();            
         }
     }
 }
