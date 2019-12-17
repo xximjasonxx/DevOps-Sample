@@ -6,7 +6,7 @@ namespace UserApi.Data.Entities
     public class User
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
 
         [StringLength(100)]
         public string Username { get; set; }
