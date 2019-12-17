@@ -94,6 +94,14 @@ stages:
             inputs:
               cwd: '$(Build.SourcesDirectory)/packages'
 
+          - task: CopyFiles@2
+            displayName: Copy UserApi Binary
+            inputs:
+              TargetFolder: $(Build.ArtifactStagingDirectory)/Binaries
+              SourceFolder: $(Build.SourcesDirectory)/UserApi/bin/UserApi*
+
+          - script: ls -l $(Build.ArtifactStagingDirectory)/Binaries
+
   - stage: push
     displayName: Push Artifact
     dependsOn: 'build'
@@ -143,3 +151,9 @@ stages:
             inputs:
               ArtifactName: EnvInfra
               PathtoPublish: $(Build.SourcesDirectory)/infrastructure/environment
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Binaries
+            inputs:
+              ArtifactName: UserApiBinary
+              PathtoPublish: $(Build.ArtifactStagingDirectory)/Binaries
