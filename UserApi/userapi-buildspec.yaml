@@ -111,7 +111,8 @@ stages:
             displayName: Create Migration Script
             inputs:
               command: custom
-              arguments: ef migrations script --output $(Build.ArtifactStagingDirectory)\sql\migration.sql -i
+              custom: ef
+              arguments: migrations script --output $(Build.ArtifactStagingDirectory)\sql\migration.sql -i
 
           - task: PublishBuildArtifacts@1
             displayName: Publish SQL Migration
