@@ -94,6 +94,31 @@ stages:
             inputs:
               cwd: '$(Build.SourcesDirectory)/packages'
 
+      - job: create-migrate
+        displayName: Create Migration Script
+        pool:
+          vmImage: 'ubuntu-latest'
+        continueOnError: false
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Restore Dependencies
+            inputs:
+              command: restore
+              restoreDirectory: $(Build.SourcesDirectory)/packages
+              projects: "UserApi/*.csproj"
+
+          - task: DotNetCoreCLI@2
+            displayName: Create Migration Script
+            inputs:
+              command: custom
+              arguments: ef migrations script --output $(Build.ArtifactStagingDirectory)\sql\migration.sql -i
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish SQL Migration
+            inputs:
+              ArtifactName: SQL
+              PathtoPublish: $(Build.ArtifactStagingDirectory)\sql
+
   - stage: push
     displayName: Push Artifact
     dependsOn: 'build'
@@ -143,9 +168,3 @@ stages:
             inputs:
               ArtifactName: EnvInfra
               PathtoPublish: $(Build.SourcesDirectory)/infrastructure/environment
-          
-          - task: PublishBuildArtifacts@1
-            displayName: Pubish Source
-            inputs:
-              ArtifactName: UserApi
-              PathtoPublish: $(Build.SourcesDirectory)/UserApi
