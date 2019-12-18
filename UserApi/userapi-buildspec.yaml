@@ -94,32 +94,6 @@ stages:
             inputs:
               cwd: '$(Build.SourcesDirectory)/packages'
 
-      - job: migrate
-        displayName: Create Migration Artifact
-        pool:
-          vmImage: 'ubuntu-latest'
-        continueOnError: false
-        steps:
-          - task: DotNetCoreCLI@2
-            displayName: Build Function Project
-            inputs:
-              command: build
-              restoreDirectory: $(Build.SourcesDirectory)/packages
-              projects: "UserApi/*.csproj"
-
-          - task: CopyFiles@2
-            displayName: Copy UserApi Binary
-            inputs:
-              TargetFolder: $(Build.ArtifactStagingDirectory)/Binaries
-              SourceFolder: $(Build.SourcesDirectory)/UserApi/bin/Debug/netcoreapp2.1
-              Contents: UserApi*
-
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Binaries
-            inputs:
-              ArtifactName: UserApiBinary
-              PathtoPublish: $(Build.ArtifactStagingDirectory)/Binaries
-
   - stage: push
     displayName: Push Artifact
     dependsOn: 'build'
@@ -169,3 +143,9 @@ stages:
             inputs:
               ArtifactName: EnvInfra
               PathtoPublish: $(Build.SourcesDirectory)/infrastructure/environment
+          
+          - task: PublishBuildArtifacts@1
+            displayName: Pubish Source
+            inputs:
+              ArtifactName: UserApi
+              PathtoPublish: $(Build.SourcesDirectory)/UserApi

@@ -97,3 +97,7 @@ resource "azurerm_function_app" "funcApp" {
 output "funcapp_url" {
   value = "https://${azurerm_function_app.funcApp.default_hostname}"
 }
+
+output "connection_string" {
+  value = "Server=${data.azurerm_sql_server.sql.fqdn};Database=${azurerm_sql_database.database.name};User Id=${data.azurerm_sql_server.sql.administrator_login};Password=Password01!;MultipleActiveResultSets=True;Connection Timeout=60"
+}
