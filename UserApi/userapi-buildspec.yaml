@@ -94,7 +94,7 @@ stages:
             inputs:
               cwd: '$(Build.SourcesDirectory)/packages'
 
-      - job: create-migrate
+      - job: createmigrate
         displayName: Create Migration Script
         pool:
           vmImage: 'ubuntu-latest'
