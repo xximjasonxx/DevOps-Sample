@@ -109,13 +109,13 @@ stages:
         
           - script: ls -l $(Build.SourcesDirectory)
           - script: ls -l $(Build.SourcesDirectory)/UserApi
+          - script: ls -l $(Build.SourcesDirectory)/UserApi/bin
 
           - task: CopyFiles@2
             displayName: Copy UserApi Binary
             inputs:
               TargetFolder: $(Build.ArtifactStagingDirectory)/Binaries
               SourceFolder: $(Build.SourcesDirectory)/UserApi/bin
-              Contents: UserApi*
 
           - script: ls -l $(Build.ArtifactStagingDirectory)/Binaries
 
