@@ -106,18 +106,13 @@ stages:
               command: build
               restoreDirectory: $(Build.SourcesDirectory)/packages
               projects: "UserApi/*.csproj"
-        
-          - script: ls -l $(Build.SourcesDirectory)
-          - script: ls -l $(Build.SourcesDirectory)/UserApi
-          - script: ls -l $(Build.SourcesDirectory)/UserApi/bin
 
           - task: CopyFiles@2
             displayName: Copy UserApi Binary
             inputs:
               TargetFolder: $(Build.ArtifactStagingDirectory)/Binaries
-              SourceFolder: $(Build.SourcesDirectory)/UserApi/bin
-
-          - script: ls -l $(Build.ArtifactStagingDirectory)/Binaries
+              SourceFolder: $(Build.SourcesDirectory)/UserApi/bin/Debug/netcoreapp2.1
+              Contents: UserApi*
 
   - stage: push
     displayName: Push Artifact
