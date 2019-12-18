@@ -114,7 +114,8 @@ stages:
             displayName: Copy UserApi Binary
             inputs:
               TargetFolder: $(Build.ArtifactStagingDirectory)/Binaries
-              SourceFolder: $(Build.SourcesDirectory)/UserApi/bin/UserApi*
+              SourceFolder: $(Build.SourcesDirectory)/UserApi/bin
+              Contents: UserApi*
 
           - script: ls -l $(Build.ArtifactStagingDirectory)/Binaries
 
