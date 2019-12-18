@@ -94,6 +94,19 @@ stages:
             inputs:
               cwd: '$(Build.SourcesDirectory)/packages'
 
+      - job: migrate
+        displayName: Create Migration Artifact
+        pool:
+          vmImage: 'ubuntu-latest'
+        continueOnError: false
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Build Function Project
+            inputs:
+              command: build
+              restoreDirectory: $(Build.SourcesDirectory)/packages
+              projects: "UserApi/*.csproj"
+        
           - script: ls -l $(Build.SourcesDirectory)
           - script: ls -l $(Build.SourcesDirectory)/UserApi
 
