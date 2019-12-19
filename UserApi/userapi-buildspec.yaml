@@ -117,7 +117,7 @@ stages:
           - script: |
               dotnet ef migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
             displayName: Create Migration Script
-            workingDirectory: $(Build.SourceDirectory)/UserApi
+            workingDirectory: $(Build.SourcesDirectory)/UserApi
 
           - task: PublishBuildArtifacts@1
             displayName: Publish SQL Migration
