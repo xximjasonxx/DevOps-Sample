@@ -23,7 +23,7 @@ namespace UserApi.Data
         public UserDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
-            //optionsBuilder.UseSqlServer(_configuration["ConnectionString"]);
+            optionsBuilder.UseSqlServer("test");
 
             return new UserDbContext(optionsBuilder.Options);
         }
