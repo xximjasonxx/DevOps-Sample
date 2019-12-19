@@ -101,9 +101,9 @@ stages:
         continueOnError: false
         steps:
           - task: DotNetCoreInstaller@0
-            displayName: 'Use .NET Core sdk 2.2.402'
+            displayName: 'Use .NET Core SDK 2.2.6'
             inputs:
-              version: 2.2.402
+              version: 2.2.6
 
           - task: DotNetCoreCLI@2
             displayName: Build Project
@@ -112,7 +112,7 @@ stages:
               workingDirectory: $(Build.SourcesDirectory)/UserApi
 
           - script: |
-              dotnet tool install --global dotnet-ef --version 2.2.6-servicing-10079
+              dotnet tool install --global dotnet-ef --version 2.2.6
               dotnet ef migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
             displayName: Create Migration Script
             workingDirectory: $(Build.SourcesDirectory)/UserApi
@@ -121,7 +121,7 @@ stages:
             displayName: Publish SQL Migration
             inputs:
               ArtifactName: SQL
-              PathtoPublish: $(Build.ArtifactStagingDirectory)\sql
+              PathtoPublish: $(Build.ArtifactStagingDirectory)/sql
 
   - stage: push
     displayName: Push Artifact
