@@ -112,7 +112,8 @@ stages:
             inputs:
               command: custom
               custom: ef
-              arguments: migrations script --output $(Build.ArtifactStagingDirectory)\sql\migration.sql -i
+              arguments: migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
+              restoreDirectory: $(Build.SourcesDirectory)/packages
 
           - task: PublishBuildArtifacts@1
             displayName: Publish SQL Migration
