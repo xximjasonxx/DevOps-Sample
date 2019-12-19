@@ -115,7 +115,7 @@ stages:
               workingDirectory: $(Build.SourcesDirectory)/UserApi
 
           - script: |
-              dotnet install tool --global dotnet-ef
+              dotnet tool install --global dotnet-ef
               dotnet ef migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
             displayName: Create Migration Script
             workingDirectory: $(Build.SourcesDirectory)/UserApi
