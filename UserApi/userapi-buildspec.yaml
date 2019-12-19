@@ -100,22 +100,20 @@ stages:
           vmImage: 'ubuntu-latest'
         continueOnError: false
         steps:
-          - task: DotNetCoreCLI@2
-            displayName: Restore Dependencies
+          - task: DotNetCoreInstaller@0
+            displayName: 'Use .NET Core sdk 2.1.300'
             inputs:
-              command: restore
-              restoreDirectory: $(Build.SourcesDirectory)/packages
-              projects: "UserApi/*.csproj"
+              version: 2.1.300
 
           - task: DotNetCoreCLI@2
             displayName: Build Project
             inputs:
               command: build
-              arguments: --no-restore --framework netcoreapp2.1
+              arguments: --framework netcoreapp2.1
               workingDirectory: $(Build.SourcesDirectory)/UserApi
 
           - script: |
-              dotnet tool install --global dotnet-ef --version 3.0.0
+              dotnet tool install --global dotnet-ef --version 2.2
               dotnet ef migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
             displayName: Create Migration Script
             workingDirectory: $(Build.SourcesDirectory)/UserApi
