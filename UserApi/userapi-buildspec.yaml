@@ -108,12 +108,16 @@ stages:
               projects: "UserApi/*.csproj"
 
           - task: DotNetCoreCLI@2
-            displayName: Create Migration Script
+            displayName: Build Project
             inputs:
-              command: custom
-              custom: ef
-              arguments: migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
-              restoreDirectory: $(Build.SourcesDirectory)/packages
+              command: build
+              arguments: --no-restore --framework netcoreapp2.1
+              workingDirectory: $(Build.SourcesDirectory)/UserApi
+
+          - script: |
+              dotnet ef migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
+            displayName: Create Migration Script
+            workingDirectory: $(Build.SourceDirectory)/UserApi
 
           - task: PublishBuildArtifacts@1
             displayName: Publish SQL Migration
