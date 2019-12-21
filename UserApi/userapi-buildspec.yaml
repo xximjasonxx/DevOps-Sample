@@ -94,35 +94,6 @@ stages:
             inputs:
               cwd: '$(Build.SourcesDirectory)/packages'
 
-      - job: createmigrate
-        displayName: Create Migration Script
-        pool:
-          vmImage: 'ubuntu-latest'
-        continueOnError: false
-        steps:
-          - task: DotNetCoreInstaller@0
-            displayName: 'Use .NET Core sdk 2.2.402'
-            inputs:
-              version: 2.2.402
-
-          - task: DotNetCoreCLI@2
-            displayName: Build Project
-            inputs:
-              command: build
-              workingDirectory: $(Build.SourcesDirectory)/UserApi
-
-          - script: |
-              dotnet tool install --global dotnet-ef --version 2.2.6
-              dotnet ef migrations script --output $(Build.ArtifactStagingDirectory)/sql/migration.sql -i
-            displayName: Create Migration Script
-            workingDirectory: $(Build.SourcesDirectory)/UserApi
-
-          - task: PublishBuildArtifacts@1
-            displayName: Publish SQL Migration
-            inputs:
-              ArtifactName: SQL
-              PathtoPublish: $(Build.ArtifactStagingDirectory)/sql
-
   - stage: push
     displayName: Push Artifact
     dependsOn: 'build'

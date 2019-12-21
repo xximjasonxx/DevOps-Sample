@@ -12,11 +12,8 @@ namespace UserApi.Functions
 {
     public class UserCreatedFunction
     {
-        private readonly IUserDbContext _userDbContext;
-
-        public UserCreatedFunction(IUserDbContext userDbContext)
+        public UserCreatedFunction()
         {
-            _userDbContext = userDbContext;
         }
         
         [FunctionName("UserCreatedFunction")]
@@ -25,8 +22,8 @@ namespace UserApi.Functions
             logger.LogInformation("UserCreated Event Received by UserApi");
             var user = JsonConvert.DeserializeObject<User>(eventData.Data.ToString());
 
-            await _userDbContext.Users.AddAsync(user);
-            await _userDbContext.SaveChangesAsync();            
+            //await _userDbContext.Users.AddAsync(user);
+            //await _userDbContext.SaveChangesAsync();            
         }
     }
 }

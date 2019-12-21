@@ -4,7 +4,6 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using Microsoft.EntityFrameworkCore;
 
 [assembly: FunctionsStartup(typeof(UserApi.Startup))]
 namespace UserApi
@@ -24,10 +23,7 @@ namespace UserApi
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddDbContext<IUserDbContext, UserDbContext>(opts =>
-            {
-                opts.UseSqlServer(_configuration["ConnectionString"]);
-            });
+            
         }
     }
 }
