@@ -65,7 +65,7 @@ resource "azurerm_cosmosdb_account" "db" {
   }
 
   geo_location {
-    location                = "${var.failover_location}"
+    location                = "EastUS"
     failover_priority       = 1
   }
 }
