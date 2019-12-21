@@ -42,7 +42,6 @@ resource "azurerm_cosmosdb_mongo_database" "db" {
   name                  = "${var.app_name}-${var.env_name}-user-db"
   resource_group_name   = "${data.azurerm_resource_group.rg.name}"
   account_name          = "${data.azurerm_cosmosdb_account.db.name}"
-  throughput            = 400
 }
 
 resource "azurerm_storage_account" "storage" {
