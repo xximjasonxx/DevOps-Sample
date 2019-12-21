@@ -65,17 +65,6 @@ resource "azurerm_app_service_plan" "plan" {
   }
 }
 
-resource "azurerm_sql_database" "database" {
-  name                = "${var.app_name}-user-db"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  location            = "${data.azurerm_resource_group.rg.location}"
-  server_name         = "${data.azurerm_sql_server.sql.name}"
-
-  tags = {
-    environment = "${var.env_name}"
-  }
-}
-
 resource "azurerm_function_app" "funcApp" {
     name                       = "userapi-${var.app_name}fa-${var.env_name}"
     location                   = "${data.azurerm_resource_group.rg.location}"
