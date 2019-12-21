@@ -100,3 +100,7 @@ output "topic_endpoint" {
 output "topic_id" {
   value = "${azurerm_eventgrid_topic.topic.id}"
 }
+
+output "mongo_connections" {
+  value = "${azurerm_cosmosdb_account.db.connection_strings}"
+}
