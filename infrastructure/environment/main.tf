@@ -50,6 +50,26 @@ resource "azurerm_sql_firewall_rule" "firewall" {
   end_ip_address      = "0.0.0.0"
 }
 
+resource "azurerm_cosmosdb_account" "db" {
+  name                      = "${var.app_name}-${var.env_name}-cosmos-account"
+  location                  = "${data.azurerm_resource_group.rg.location}"
+  resource_group_name       = "${data.azurerm_resource_group.rg.name}"
+  offer_type                = "Standard"
+  kind                      = "MongoDB"
+  
+  enable_automatic_failover = false
+  consistency_policy {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 10
+    max_staleness_prefix    = 200
+  }
+
+  geo_location {
+    location                = "${var.failover_location}"
+    failover_priority       = 1
+  }
+}
+
 resource "azurerm_application_insights" "insights" {
   name                          = "${var.app_name}-${var.env_name}-insights"
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
