@@ -23,6 +23,10 @@ variable "tag" {
   type = "string"
 }
 
+variable "connectionString" {
+  type = "string"
+}
+
 
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
@@ -80,7 +84,7 @@ resource "azurerm_function_app" "funcApp" {
         DOCKER_REGISTRY_SERVER_USERNAME           = "${data.azurerm_container_registry.registry.admin_username}"
         DOCKER_REGISTRY_SERVER_PASSWORD           = "${data.azurerm_container_registry.registry.admin_password}"
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
-        ConnectionString                          = "mongodb://"
+        ConnectionString                          = "${var.connectionString}"
     }
 
     site_config {
