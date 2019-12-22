@@ -43,7 +43,7 @@ data "azurerm_cosmosdb_account" "db" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "db" {
-  name                  = "${var.app_name}-${var.env_name}-user-db"
+  name                  = "${var.app_name}-${var.env_name}-userdb"
   resource_group_name   = "${data.azurerm_resource_group.rg.name}"
   account_name          = "${data.azurerm_cosmosdb_account.db.name}"
 }
@@ -85,6 +85,7 @@ resource "azurerm_function_app" "funcApp" {
         DOCKER_REGISTRY_SERVER_PASSWORD           = "${data.azurerm_container_registry.registry.admin_password}"
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
         ConnectionString                          = "${var.connectionString}"
+        DatabaseName                              = "${var.app_name}-userdb"
     }
 
     site_config {

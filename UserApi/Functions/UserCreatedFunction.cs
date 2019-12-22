@@ -7,23 +7,34 @@ using Microsoft.Azure.EventGrid.Models;
 using UserApi.Data.Entities;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using UserApi.Data.Models;
+using System;
 
 namespace UserApi.Functions
 {
     public class UserCreatedFunction
     {
-        public UserCreatedFunction()
+        private readonly IDataProvider _dataProvider;
+
+        public UserCreatedFunction(IDataProvider dataProvider)
         {
+            _dataProvider = dataProvider;
         }
         
         [FunctionName("UserCreatedFunction")]
         public async Task Run([EventGridTrigger]EventGridEvent eventData, ILogger logger)
         {
-            logger.LogInformation("UserCreated Event Received by UserApi");
-            var user = JsonConvert.DeserializeObject<User>(eventData.Data.ToString());
+            try
+            {
+                logger.LogInformation("UserCreated Event Received by UserApi");
+                var user = JsonConvert.DeserializeObject<User>(eventData.Data.ToString());
 
-            //await _userDbContext.Users.AddAsync(user);
-            //await _userDbContext.SaveChangesAsync();            
+                await _dataProvider.AddUserAsync(user);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Exception Encounted Creating User");
+            }     
         }
     }
 }

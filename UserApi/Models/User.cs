@@ -1,20 +1,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace UserApi.Data.Entities
+namespace UserApi.Data.Models
 {
     public class User
     {
-        [Key]
         public Guid UserId { get; set; }
 
-        [StringLength(100)]
         public string Username { get; set; }
 
-        [StringLength(255)]
         public string FirstName { get; set; }
 
-        [StringLength(255)]
         public string LastName { get; set; }
     }
 }
