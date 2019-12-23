@@ -2,29 +2,26 @@
 using UserApi.Data;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using System.IO;
 using UserApi.Data.Impl;
+using UserApi.Framework.AccessToken;
+using Microsoft.Azure.WebJobs.Hosting;
+using Microsoft.Azure.WebJobs;
 
 [assembly: FunctionsStartup(typeof(UserApi.Startup))]
 namespace UserApi
 {
-    public class Startup : FunctionsStartup
+    public class Startup : IWebJobsStartup
     {
-        private readonly IConfiguration _configuration;
+        // public override void Configure(IFunctionsHostBuilder builder)
+        // {
+        //     builder.Services.AddTransient<IDataProvider, MongoDataProvider>();
+        // }
 
-        public Startup()
-        {
-            /*_configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("local.settings.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();*/
-        }
-
-        public override void Configure(IFunctionsHostBuilder builder)
+        public void Configure(IWebJobsBuilder builder)
         {
             builder.Services.AddTransient<IDataProvider, MongoDataProvider>();
+
+            builder.AddExtension<AccessTokenExtensionProvider>();
         }
     }
 }
