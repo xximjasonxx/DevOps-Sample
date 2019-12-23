@@ -27,6 +27,9 @@ variable "connectionString" {
   type = "string"
 }
 
+variable "jwt_key" {
+  type = "string"
+}
 
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
@@ -80,6 +83,9 @@ resource "azurerm_function_app" "funcApp" {
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
         ConnectionString                          = "${var.connectionString}"
         DatabaseName                              = "${var.app_name}-userdb"
+        JwtKey                                    = "${var.jwt_key}"
+        JwtIssuer                                 = "${var.app_name}"
+        JwtAudience                               = "${var.app_name}-${var.env_name}"
     }
 
     site_config {

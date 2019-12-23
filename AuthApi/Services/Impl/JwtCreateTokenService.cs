@@ -24,7 +24,7 @@ namespace AuthApi.Services.Impl
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.EmailAddress)
+                new Claim(ClaimTypes.NameIdentifier, user.Username)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
