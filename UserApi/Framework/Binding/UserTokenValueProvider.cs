@@ -22,7 +22,11 @@ namespace UserApi.Framework.Binding
 
         public Task<object> GetValueAsync()
         {
-            return Task.FromResult((object)new UserTokenResult());
+            var readResult = _readTokenService.ReadToken(_userToken);
+            return Task.FromResult((object)new UserTokenResult
+            {
+                Username = readResult.Username
+            });
         }
 
         public string ToInvokeString()
