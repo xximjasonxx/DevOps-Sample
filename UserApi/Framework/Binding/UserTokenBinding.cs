@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Azure.WebJobs.Host.Bindings;
@@ -16,11 +20,22 @@ namespace UserApi.Framework.Binding
 
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
-            var headers = context.BindingData["Header"] as DefaultHttpRequest;
+            var headers = context.BindingData["Headers"] as IDictionary<string, string>;
+            if (!headers.ContainsKey("Authorization"))
+            {
+                throw new Exception("boom - no auth header");
+            }
 
+            var userTokenGroups = Regex.Match(headers["Authorization"], @"^Bearer (\S+)$").Groups;
+            if (userTokenGroups.Count < 2)
+            {
+                throw new Exception("boom - bad format");
+            }
+
+            var userToken = userTokenGroups.ElementAt(1);
             var issuerToken = "movieappwmp";
 
-            return Task.FromResult<IValueProvider>(new UserTokenValueProvider(headers, issuerToken));
+            return Task.FromResult<IValueProvider>(new UserTokenValueProvider(userToken, issuerToken));
         }
 
         public ParameterDescriptor ToParameterDescriptor()
