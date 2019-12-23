@@ -29,5 +29,17 @@ namespace UserApi.Data.Impl
                 User = user
             });
         }
+
+        public async Task<User> GetUserByUsername(string username)
+        {
+            var client = new MongoClient(_configuration["ConnectionString"]);
+            var database = client.GetDatabase(_configuration["DatabaseName"]);
+            var collection = database.GetCollection<UserDocument>(UserDataCollectionName);
+
+            var filter = Builders<UserDocument>.Filter.Eq(uf => uf.User.Username, username);
+            var document = (await collection.FindAsync(filter)).FirstOrDefault();
+
+            return document?.User;
+        }
     }
 }
