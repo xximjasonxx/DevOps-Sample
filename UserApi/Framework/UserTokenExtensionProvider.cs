@@ -1,4 +1,6 @@
 using Microsoft.Azure.WebJobs.Host.Config;
+using Microsoft.Extensions.DependencyInjection;
+using UserApi.Extensions;
 using UserApi.Framework.Binding;
 
 namespace UserApi.Framework
@@ -7,8 +9,11 @@ namespace UserApi.Framework
     {
         public void Initialize(ExtensionConfigContext context)
         {
-            var provider = new UserTokenBindingProvider();
-            var rule = context.AddBindingRule<UserTokenAttribute>().Bind(provider);
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.RegisterDependencies();
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            context.AddBindingRule<UserTokenAttribute>().Bind(new UserTokenBindingProvider(serviceProvider));
         }
     }
 }

@@ -1,19 +1,21 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Azure.WebJobs.Host.Bindings;
+using UserApi.Services;
 
 namespace UserApi.Framework.Binding
 {
     public class UserTokenValueProvider : IValueProvider
     {
-        private readonly DefaultHttpRequest _request;
+        private readonly IReadTokenService _readTokenService;
+        private readonly string _userToken;
         private readonly string _issuerToken;
 
-        public UserTokenValueProvider(object headers, string issuerToken)
+        public UserTokenValueProvider(string userToken, string issuerToken, IReadTokenService readTokenService)
         {
-            //_request = request;
+            _userToken = userToken;
             _issuerToken = issuerToken;
+            _readTokenService = readTokenService;
         }
 
         public Type Type => typeof(UserTokenResult);
@@ -25,7 +27,7 @@ namespace UserApi.Framework.Binding
 
         public string ToInvokeString()
         {
-            return _request.ToString();
+            return nameof(UserTokenValueProvider);
         }
     }
 }

@@ -6,6 +6,9 @@ using UserApi.Data.Impl;
 using UserApi.Framework;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Azure.WebJobs;
+using UserApi.Services;
+using UserApi.Services.Impl;
+using UserApi.Extensions;
 
 [assembly: FunctionsStartup(typeof(UserApi.Startup))]
 namespace UserApi
@@ -19,8 +22,7 @@ namespace UserApi
 
         public void Configure(IWebJobsBuilder builder)
         {
-            builder.Services.AddTransient<IDataProvider, MongoDataProvider>();
-
+            builder.Services.RegisterDependencies();
             builder.AddExtension<UserTokenExtensionProvider>();
         }
     }
