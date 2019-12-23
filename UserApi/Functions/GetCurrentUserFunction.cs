@@ -4,7 +4,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using UserApi.Data;
-using UserApi.Framework.AccessToken;
+using UserApi.Framework.Binding;
 
 namespace UserApi.Functions
 {
@@ -21,7 +21,7 @@ namespace UserApi.Functions
         public async Task<HttpResponseMessage> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "current/user")]HttpRequestMessage eventData,
             ILogger logger,
-            [AccessToken]AccessTokenResult principal)
+            [UserToken]UserTokenResult userResult)
         {
             return null;
         }

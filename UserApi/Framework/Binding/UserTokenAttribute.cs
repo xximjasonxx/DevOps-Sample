@@ -1,11 +1,11 @@
 using System;
 using Microsoft.Azure.WebJobs.Description;
 
-namespace UserApi.Framework.AccessToken
+namespace UserApi.Framework.Binding
 {
     [AttributeUsage(AttributeTargets.Parameter)]
     [Binding]
-    public sealed class AccessTokenAttribute : Attribute
+    public sealed class UserTokenAttribute : Attribute
     {
         
     }

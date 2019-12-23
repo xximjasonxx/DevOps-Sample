@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Host.Protocols;
 
-namespace UserApi.Framework.AccessToken
+namespace UserApi.Framework.Binding
 {
-    public class AccessTokenBinding : IBinding
+    public class UserTokenBinding : IBinding
     {
         public bool FromAttribute => true;
 
@@ -16,11 +16,11 @@ namespace UserApi.Framework.AccessToken
 
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
-            var request = context.BindingData["$request"] as DefaultHttpRequest;
+            var headers = context.BindingData["Header"] as DefaultHttpRequest;
 
             var issuerToken = "movieappwmp";
 
-            return Task.FromResult<IValueProvider>(new AccessTokenValueProvider(request, issuerToken));
+            return Task.FromResult<IValueProvider>(new UserTokenValueProvider(headers, issuerToken));
         }
 
         public ParameterDescriptor ToParameterDescriptor()
