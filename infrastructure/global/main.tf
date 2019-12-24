@@ -8,10 +8,6 @@ variable "app_name" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "movieappwmp-rg"
-    storage_account_name = "movieappwmpstate"
-    container_name       = "tfstate"
-    key                  = "global-state"
   }
 }
 
