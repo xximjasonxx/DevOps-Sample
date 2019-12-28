@@ -29,19 +29,12 @@ namespace UserApi.Framework.Binding
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
             var headers = context.BindingData["Headers"] as IDictionary<string, string>;
+            var issuerToken = "movieappwmp";
             if (!headers.ContainsKey("Authorization"))
-            {
-                throw new Exception("boom - no auth header");
-            }
+                return Task.FromResult<IValueProvider>(new UserTokenValueProvider(string.Empty, issuerToken, _readTokenService));
 
             var userTokenGroups = Regex.Match(headers["Authorization"], @"^Bearer (\S+)$").Groups;
-            if (userTokenGroups.Count < 2)
-            {
-                throw new Exception("boom - bad format");
-            }
-
             var userToken = userTokenGroups.ElementAt(1).Value;
-            var issuerToken = "movieappwmp";
 
             return Task.FromResult<IValueProvider>(new UserTokenValueProvider(userToken, issuerToken, _readTokenService));
         }

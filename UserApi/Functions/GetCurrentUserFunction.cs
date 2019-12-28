@@ -21,20 +21,29 @@ namespace UserApi.Functions
         }
 
         [FunctionName("GetCurrentUserFunction")]
-        public async Task<HttpResponseMessage> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "current/user")]HttpRequestMessage eventData,
             ILogger logger,
             [UserToken]UserTokenResult userResult)
-        {
-            var user = await _dataProvider.GetUserByUsername(userResult.Username);
-            if (user == null)
+        {   
+            if (userResult.TokenState == TokenState.Valid)
             {
-                throw new Exception("boom - No Current User");
-            }
+                var user = await _dataProvider.GetUserByUsername(userResult.Username);
+                if (user == null)
+                {
+                    return new NotFoundResult();
+                }
 
-            var responseMessage = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
-            responseMessage.Content = new StringContent(JsonConvert.SerializeObject(user));
-            return responseMessage;
+                return new OkObjectResult(user);
+            }
+            else if (userResult.TokenState == TokenState.Empty)
+            {
+                return new BadRequestResult();
+            }
+            else
+            {
+                return new UnauthorizedResult();
+            }
         }
     }
 }
