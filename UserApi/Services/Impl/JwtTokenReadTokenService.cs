@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using UserApi.Extensions;
 using UserApi.Services.Result;
 
 namespace UserApi.Services.Impl
@@ -31,7 +32,7 @@ namespace UserApi.Services.Impl
                 ValidateAudience = true,
                 ValidAudience = _configuration["JwtAudience"]
             };
-
+            
             var identity = handler.ValidateToken(tokenString, validations, out var tokenSecure).Identity as ClaimsIdentity;
             if (identity == null)
             {
@@ -40,7 +41,7 @@ namespace UserApi.Services.Impl
 
             return new TokenReadResult
             {
-                Username = identity.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value
+                Username = identity.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value,
             };
         }
     }

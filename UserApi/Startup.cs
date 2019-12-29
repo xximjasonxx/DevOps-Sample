@@ -23,6 +23,7 @@ namespace UserApi
         public void Configure(IWebJobsBuilder builder)
         {
             builder.Services.RegisterDependencies();
+
             builder.AddExtension<UserTokenExtensionProvider>();
         }
     }

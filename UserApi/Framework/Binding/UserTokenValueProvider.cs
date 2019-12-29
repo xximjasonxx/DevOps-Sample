@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs.Host.Bindings;
+using Microsoft.IdentityModel.Tokens;
 using UserApi.Services;
 
 namespace UserApi.Framework.Binding
@@ -20,13 +21,23 @@ namespace UserApi.Framework.Binding
 
         public Type Type => typeof(UserTokenResult);
 
-        public Task<object> GetValueAsync()
+        public async Task<object> GetValueAsync()
         {
-            var readResult = _readTokenService.ReadToken(_userToken);
-            return Task.FromResult((object)new UserTokenResult
+            try
             {
-                Username = readResult.Username
-            });
+                var readResult = _readTokenService.ReadToken(_userToken);
+                return new UserTokenResult { Username = readResult.Username, TokenState = TokenState.Valid };
+            }
+            catch (ArgumentNullException)
+            {
+                // token not provided
+                return new UserTokenResult { TokenState = TokenState.Empty };
+            }
+            catch
+            {
+                // token was bad
+                return new UserTokenResult { TokenState = TokenState.Invalid };
+            }
         }
 
         public string ToInvokeString()
