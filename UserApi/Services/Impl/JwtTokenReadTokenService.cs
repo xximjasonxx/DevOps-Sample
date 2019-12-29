@@ -42,7 +42,6 @@ namespace UserApi.Services.Impl
             return new TokenReadResult
             {
                 Username = identity.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value,
-                
             };
         }
     }
