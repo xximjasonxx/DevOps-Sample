@@ -26,7 +26,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 data "azuread_user" "admin_user" {
-  display_name = "wmp-DevOps-MovieAppTest-a94e41d4-5686-46fc-8390-e18bbbbb27cc"
+  user_principal_name = "wmp-DevOps-MovieAppTest-a94e41d4-5686-46fc-8390-e18bbbbb27cc"
 }
 
 resource "azurerm_key_vault" "kv" {
