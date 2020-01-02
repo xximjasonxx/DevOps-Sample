@@ -32,6 +32,7 @@ stages:
               repository: userapi-unchecked
               tags: $(Build.BuildId)
               Dockerfile: UserApi/Dockerfile
+            enabled: false
 
           - task: UsePythonVersion@0
             inputs:
@@ -51,6 +52,7 @@ stages:
               containerRegistry: MovieAppRegistryConnection
               repository: userapi-unchecked
               tags: $(Build.BuildId)
+            enabled: false
 
           - task: AnchoreTask@1
             inputs:
@@ -60,6 +62,7 @@ stages:
               imageName: 'movieappwmpregistry.azurecr.io/userapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
+            enabled: false
 
       - job: verify
         displayName: Verify Artifact
