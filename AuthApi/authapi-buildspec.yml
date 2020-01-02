@@ -115,16 +115,3 @@ stages:
               repository: authapi
               tags: $(Build.BuildId)
 
-  - stage: publish
-    displayName: Publish Artifacts
-    dependsOn: 'push'
-    jobs:
-      - job: publish
-        displayName: Publish Infrastructure
-        steps:
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Testing Files
-            inputs:
-              ArtifactName: Tests
-              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/testing
-

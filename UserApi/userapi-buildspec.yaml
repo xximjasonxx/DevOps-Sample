@@ -6,8 +6,6 @@ trigger:
     include:
       - UserApi
       - UserApi.Tests
-    exclude:
-      - UserApi/userapi-buildspec.yml
 
 stages:
   - stage: build
@@ -32,7 +30,7 @@ stages:
               repository: userapi-unchecked
               tags: $(Build.BuildId)
               Dockerfile: UserApi/Dockerfile
-            enabled: false
+            enabled: true
 
           - task: UsePythonVersion@0
             inputs:
@@ -52,7 +50,7 @@ stages:
               containerRegistry: MovieAppRegistryConnection
               repository: userapi-unchecked
               tags: $(Build.BuildId)
-            enabled: false
+            enabled: true
 
           - task: AnchoreTask@1
             inputs:
@@ -62,7 +60,7 @@ stages:
               imageName: 'movieappwmpregistry.azurecr.io/userapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
-            enabled: false
+            enabled: true
 
       - job: verify
         displayName: Verify Artifact
@@ -84,13 +82,13 @@ stages:
               arguments: --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
               workingDirectory: $(Build.SourcesDirectory)/UserApi.Tests
               restoreDirectory: $(Build.SourcesDirectory)/packages
-            enabled: false
+            enabled: true
 
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.cobertura.xml'
-            enabled: false
+            enabled: true
 
           - task: WhiteSource Bolt@19
             displayName: Whitesource Scan
@@ -120,17 +118,3 @@ stages:
               containerRegistry: MovieAppRegistryConnection
               repository: userapi
               tags: $(Build.BuildId)
-
-  - stage: publish
-    displayName: Publish Artifacts
-    dependsOn: 'push'
-    jobs:
-      - job: publish
-        displayName: Publish Infrastructure
-        steps:
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Testing Files
-            inputs:
-              ArtifactName: Tests
-              PathtoPublish: $(Build.SourcesDirectory)/UserApi/testing
-            enabled: false
