@@ -25,7 +25,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled            = true
 }
 
-data "azurerm_azuread_service_principal" "principal" {
+data "azuread_user" "admin_user" {
   display_name = "wmp-DevOps-MovieAppTest-a94e41d4-5686-46fc-8390-e18bbbbb27cc"
 }
 
@@ -44,7 +44,7 @@ resource "azurerm_key_vault" "kv" {
 
   access_policy {
     tenant_id       = "${data.azurerm_client_config.current.tenant_id}"
-    object_id       = "${data.azurerm_azuread_service_principal.principal.id}"
+    object_id       = "${data.azuread_user.admin_user.id}"
 
     key_permissions = [
       "create",
