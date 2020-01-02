@@ -44,7 +44,7 @@ resource "azurerm_key_vault" "kv" {
 
   access_policy {
     tenant_id       = "${data.azurerm_client_config.current.tenant_id}"
-    object_id       = "${data.azuread_user.admin_user.id}"
+    object_id       = "${data.azuread_service_principal.admin_user.id}"
 
     key_permissions = [
       "create",
