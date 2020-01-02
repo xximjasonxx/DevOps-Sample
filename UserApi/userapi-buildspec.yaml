@@ -129,26 +129,8 @@ stages:
         displayName: Publish Infrastructure
         steps:
           - task: PublishBuildArtifacts@1
-            displayName: Publish Infrastructure folder
-            inputs:
-              ArtifactName: Infra
-              PathtoPublish: $(Build.SourcesDirectory)/UserApi/infrastructure
-
-          - task: PublishBuildArtifacts@1
             displayName: Publish Testing Files
             inputs:
               ArtifactName: Tests
               PathtoPublish: $(Build.SourcesDirectory)/UserApi/testing
             enabled: false
-
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Environment Infra
-            inputs:
-              ArtifactName: EnvInfra
-              PathtoPublish: $(Build.SourcesDirectory)/infrastructure/environment
-
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Global Infra
-            inputs:
-              ArtifactName: GlobalInfra
-              PathtoPublish: $(Build.SourcesDirectory)/infrastructure/global
