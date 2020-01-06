@@ -115,3 +115,9 @@ stages:
               repository: authapi
               tags: $(Build.BuildId)
 
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Testing folder
+            inputs:
+              ArtifactName: Testing
+              PathtoPublish: $(Build.SourcesDirectory)/AuthApi/testing
+
