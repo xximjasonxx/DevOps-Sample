@@ -12,6 +12,11 @@ Global is run before everything to ensure any drift at the Global level is corre
 
 The goal is to show how we MIGHT organize a multi-service architecture in future projects and how we might pass data created such that our scripts enable true environments.
 
+### Infrastructure vs Code Changes
+Each build script is setup to only listen for changes within their relevant directories, all Infrastructure folders are stored at the root level under the **infrastructure** folder. This is to ensure that infrastructure changes can be made **WITHOUT** going through a complete build process where there are no code changes.
+
+This is achieved by using two artifact types within the Release pipeline: Source and Build. Build is commonly seen and will kick the release pipeline off automatically when there is a code change that results in a succuessful build. The Source type is seen less often but enables us to start the Release process manually when tweaking infrastructure - the Release will then use the latest build when creating the release.
+
 ## AuthApi
 AuthApi serves as a simple JWT broker service issueing tokens to connecting users. Authenticated requests to other services must use this JWT token to be allowed to call endpoints
 
