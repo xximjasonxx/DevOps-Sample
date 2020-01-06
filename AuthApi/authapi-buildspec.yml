@@ -59,6 +59,7 @@ stages:
               imageName: 'movieappwmpregistry.azurecr.io/authapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
+            enabled: false  # This server has been removed - but the example is still valid
 
       - job: verify
         displayName: Verify Artifact
@@ -96,7 +97,7 @@ stages:
     dependsOn: 'build'
     jobs:
       - job: push
-        displayName: Push to Docker Registry
+        displayName: Push Final Artifacts
         steps:
           - task: Docker@2
             displayName: Build Final Docker Image
