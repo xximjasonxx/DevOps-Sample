@@ -4,9 +4,9 @@ trigger:
     include:
       - dev
   paths:
-    exclude:
-      - UserApi
-      - UserApi.Tests
+    include:
+      - AuthApi
+      - AuthApi.Tests
 
 stages:
   - stage: build
