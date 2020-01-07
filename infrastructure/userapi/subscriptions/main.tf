@@ -39,7 +39,7 @@ data "azurerm_key_vault_secret" "topic_id" {
 
 resource "azurerm_eventgrid_event_subscription" "default" {
   name                  = "userapi-userCreated-${var.env_name}-subscription"
-  scope                 = "${data.azurerm_key_vault_secret.topic_id}"
+  scope                 = "${data.azurerm_key_vault_secret.topic_id.value}"
   event_delivery_schema = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
 
