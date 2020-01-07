@@ -28,8 +28,10 @@ The other job runs the unit tests and would do various other checks against the 
 The final stage rebuilds the image with a "checked" tag to indicate the image has passed inspection, it is pushed to the same Azure Container Registry. Additionally, any other artifacts needed by the Release process (except Infrastructure scripts) are "published" so they can be referenced in the Release pipeline
 
 ## UserApi
-UserApi serves general User level data such as Name (Username is duplicated with the Auth data source)
+UserApi serves general User level data such as Name (Username is duplicated with the Auth data source). New users are created in the database via an event delivered by Event Grid in response to User Creation in the AuthApi. This type of event driven sysytem is increasingly become more common and enables greater adherenance to distributed programming fundamentals.
 
 ## Setup
+
+1. Open a Command Line instance and navigate to the &lt;root&gt;/infrastructure/setup folder
 
 #### Backend State

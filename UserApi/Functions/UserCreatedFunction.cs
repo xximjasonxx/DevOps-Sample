@@ -28,6 +28,8 @@ namespace UserApi.Functions
             {
                 logger.LogInformation("UserCreated Event Received by UserApi");
                 var user = JsonConvert.DeserializeObject<User>(eventData.Data.ToString());
+                if (user.UserId == default(Guid))
+                    throw new FormatException("Incoming User Object is not in the appropriate format");
 
                 await _dataProvider.AddUserAsync(user);
             }

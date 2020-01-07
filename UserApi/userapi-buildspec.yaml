@@ -60,7 +60,7 @@ stages:
               imageName: 'movieappwmpregistry.azurecr.io/userapi-unchecked:$(Build.BuildId)'
               doVulnScan: true
               minHighAllowed: 0
-            enabled: true
+            enabled: false
 
       - job: verify
         displayName: Verify Artifact
