@@ -102,7 +102,7 @@ resource "azurerm_app_service_plan" "plan" {
 resource "azurerm_key_vault_secret" "topic_key" {
   name            = "${var.env_name}-topic-access-key"
   value           = "${azurerm_eventgrid_topic.topic.primary_access_key}"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 resource "azurerm_key_vault_secret" "topic_endpoint" {
@@ -119,6 +119,6 @@ resource "azurerm_key_vault_secret" "topic_id" {
 
 resource "azurerm_key_vault_secret" "mongo_connection" {
   name            = "${var.env_name}-mongo-connection"
-  value           = "${azurerm_cosmosdb_account.db.connection_strings.value[0]}"
+  value           = "${element(azurerm_cosmosdb_account.db.connection_strings.value, 0)}"
   key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
