@@ -11,10 +11,6 @@ variable "env_name" {
   type = "string"
 }
 
-variable "topic_id" {
-  type = "string"
-}
-
 variable "app_url" {
   type = "string"
 }
@@ -23,9 +19,19 @@ variable "masterKey" {
   type = "string"
 }
 
+data "azurerm_key_vault" "kv" {
+  name                = "${var.app_name}-vault"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+}
+
+data "azurerm_key_vault_secret" "topic_id" {
+  name            = "${var.env_name}-topic-id"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
+}
+
 resource "azurerm_eventgrid_event_subscription" "default" {
   name                  = "userapi-userCreated-${var.env_name}-subscription"
-  scope                 = "${var.topic_id}"
+  scope                 = "${data.azurerm_key_vault_secret.topic_id}"
   event_delivery_schema = "EventGridSchema"
   included_event_types  = [ "UserCreatedEvent" ]
 

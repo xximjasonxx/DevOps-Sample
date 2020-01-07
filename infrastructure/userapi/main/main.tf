@@ -66,6 +66,21 @@ resource "azurerm_app_service_plan" "plan" {
   }
 }
 
+data "azurerm_key_vault" "kv" {
+  name                = "${var.app_name}-vault"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+}
+
+data "azurerm_key_vault_secret" "jwt_key" {
+  name            = "jwt-${var.env_name}-key"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
+}
+
+data "azurerm_key_vault_secret" "mongo_connection" {
+  name            = "${var.env_name}-mongo-connection"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
+}
+
 resource "azurerm_function_app" "funcApp" {
     name                       = "userapi-${var.app_name}fa-${var.env_name}"
     location                   = "${data.azurerm_resource_group.rg.location}"
@@ -81,9 +96,9 @@ resource "azurerm_function_app" "funcApp" {
         DOCKER_REGISTRY_SERVER_USERNAME           = "${data.azurerm_container_registry.registry.admin_username}"
         DOCKER_REGISTRY_SERVER_PASSWORD           = "${data.azurerm_container_registry.registry.admin_password}"
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
-        ConnectionString                          = "${var.connectionString}"
+        ConnectionString                          = "${data.azurerm_key_vault_secret.mongo_connection}"
         DatabaseName                              = "${var.app_name}-userdb"
-        JwtKey                                    = "${var.jwt_key}"
+        JwtKey                                    = "${data.azurerm_key_vault_secret.jwt_key}"
         JwtIssuer                                 = "${var.app_name}"
         JwtAudience                               = "${var.app_name}-${var.env_name}"
     }
