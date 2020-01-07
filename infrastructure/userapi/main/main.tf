@@ -23,14 +23,6 @@ variable "tag" {
   type = "string"
 }
 
-variable "connectionString" {
-  type = "string"
-}
-
-variable "jwt_key" {
-  type = "string"
-}
-
 data "azurerm_resource_group" "rg" {
   name     = "${var.app_name}-rg"
 }
