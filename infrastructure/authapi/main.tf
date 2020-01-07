@@ -71,13 +71,13 @@ data "azurerm_app_service_plan" "plan" {
 }
 
 data "azurerm_application_insights" "insights" {
-  name                          = "${var.app_name}-${var.env_name}-insights"
-  resource_group_name           = "${data.azurerm_resource_group.rg.name}"
+  name                = "${var.app_name}-${var.env_name}-insights"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
 }
 
 data "azurerm_key_vault_secret" "db_pass" {
   name            = "db-${var.env_name}-pass"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 resource "azurerm_app_service" "authapi" {
