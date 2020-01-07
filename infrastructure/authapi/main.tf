@@ -46,12 +46,12 @@ data "azurerm_key_vault_secret" "secret_key" {
 
 data "azurerm_key_vault_secret" "topic_key" {
   name            = "${var.env_name}-topic-access-key"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 data "azurerm_key_vault_secret" "topic_endpoint" {
   name            = "${var.env_name}-topic-endpoint"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 resource "azurerm_sql_database" "database" {

@@ -36,7 +36,7 @@ data "azurerm_key_vault" "kv" {
 
 data "azurerm_key_vault_secret" "db_pass" {
   name            = "db-${var.env_name}-pass"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 resource "azurerm_sql_server" "sql" {
@@ -108,17 +108,17 @@ resource "azurerm_key_vault_secret" "topic_key" {
 resource "azurerm_key_vault_secret" "topic_endpoint" {
   name            = "${var.env_name}-topic-endpoint"
   value           = "${azurerm_eventgrid_topic.topic.endpoint}"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 resource "azurerm_key_vault_secret" "topic_id" {
   name            = "${var.env_name}-topic-id"
   value           = "${azurerm_eventgrid_topic.topic.id}"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
 resource "azurerm_key_vault_secret" "mongo_connection" {
   name            = "${var.env_name}-mongo-connection"
   value           = "${azurerm_cosmosdb_account.db.connection_strings.value[0]}"
-  key_vault_id    = "${azurerm_key_vault.kv.id}"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
