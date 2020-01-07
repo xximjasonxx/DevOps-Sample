@@ -96,7 +96,7 @@ resource "azurerm_function_app" "funcApp" {
         DOCKER_REGISTRY_SERVER_USERNAME           = "${data.azurerm_container_registry.registry.admin_username}"
         DOCKER_REGISTRY_SERVER_PASSWORD           = "${data.azurerm_container_registry.registry.admin_password}"
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
-        ConnectionString                          = "${data.azurerm_key_vault_secret.mongo_connection}"
+        ConnectionString                          = "${data.azurerm_key_vault_secret.mongo_connection.value}"
         DatabaseName                              = "${var.app_name}-userdb"
         JwtKey                                    = "${data.azurerm_key_vault_secret.jwt_key}"
         JwtIssuer                                 = "${var.app_name}"
