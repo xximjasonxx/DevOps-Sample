@@ -19,6 +19,10 @@ variable "masterKey" {
   type = "string"
 }
 
+data "azurerm_resource_group" "rg" {
+  name     = "${var.app_name}-rg"
+}
+
 data "azurerm_key_vault" "kv" {
   name                = "${var.app_name}-vault"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
