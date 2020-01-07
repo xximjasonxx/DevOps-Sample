@@ -1,37 +1,71 @@
 # DevOps Automation Example Project
 *This project does not represent a complete solution. It is designed to show example and concepts that can be used in your project. Copy and Paste only when appropriate and use this for reference purposes only*
 
-## General Methodology
-All builds leverage containers and ephemeral infrastructure for environments between Dev and Production. This is done to save cost and demonstrate how Infrastructure as Code can be valuable in the development process.
+## Understanding this Project
+This project is comprised of two services (AuthApi and UserApi) which communicate with each other via events transmitted through an Azure Event Grid. The design of this is such that **ALMOST EVERY** aspect of this deployment is represented in Terraform scripts. This allows for correction of drift with each deployment. The pipelines are configured so that builds will automatically kickoff whenever changes to the code for those services is made. These builds will then kick off Releases which will deploy the updates using Terraform infrastructure changes.
 
-Further, I attempted to do as much as possible using Terraform scripts such that the process for standing up this pipeline was minimal and required only a few commands to make happen, including Secret management
+Alternatively, for pure Infra changes, a new release can be created which will invoke the updated scripts without a build.
 
-To achieve this, you will find folders which contain Terraform scripts that are global, environmental, and app specific in nature. This was done to show the boundary of service management since we want to persist certain resources between runs (Insights, App Service plans, etc).
+The methodology being used here is known as *NoOps*, which emphasizes that the application is deployed in its entirety with each commit. This means that in addition to code changes, any infra changes must also be considered as well.
 
-Global is run before everything to ensure any drift at the Global level is corrected. Within each Stage we run the our environment scripts, these scripts contain a parameter to identify which environment is being targeted. This stands up or corrects drift within Environment specific services (ex. Event Grid). Finally, we call our App specific scripts. In the case of these app resoruces, for Test and Metric, we destroy them at the end of life. We maintain the Insights pieces so we can review the data that was generated during their usage.
+## Infrastructure
+**Azure Components Used in this Sample**
+- Azure Event Grid
+- Azure Event Subscriptions
+- Azure Functions
+- Azure Key Vault
+- Azure Container Registry
+- Cosmos DB (MongoDB)
+- SQL Azure
+- Azure Blob Storage
+- Azure App Service
 
-The goal is to show how we MIGHT organize a multi-service architecture in future projects and how we might pass data created such that our scripts enable true environments.
+Each of these components is stood up using Terraform and each relevant script is run with each commit to ensure that our Infra always represents the latest
 
-### Infrastructure vs Code Changes
-Each build script is setup to only listen for changes within their relevant directories, all Infrastructure folders are stored at the root level under the **infrastructure** folder. This is to ensure that infrastructure changes can be made **WITHOUT** going through a complete build process where there are no code changes.
+## Application
 
-This is achieved by using two artifact types within the Release pipeline: Source and Build. Build is commonly seen and will kick the release pipeline off automatically when there is a code change that results in a succuessful build. The Source type is seen less often but enables us to start the Release process manually when tweaking infrastructure - the Release will then use the latest build when creating the release.
+### Auth Api
+Deployed using an App Service, serves as the authentication broker for the system issueing JWT tokens upon User creation and Login actions. Code is hosted behind the App Serivce using a Docker container that is built and validated with each commit using Anchore Container validation, Unit tested, and OSS Dependency checking using WhiteSource.
 
-## AuthApi
-AuthApi serves as a simple JWT broker service issueing tokens to connecting users. Authenticated requests to other services must use this JWT token to be allowed to call endpoints
+#### Build Process
+When a check in occurs the **authapi-buildspec.yaml** is executed which immediately spins off two jobs for the first stage:
+- Job 1 builds an "unchecked" container and pushes it to the Container Registry. It then invokes Anchore (currently disabled) to perform security checks against the built image. If it passes the Job succeeds
 
-### Understanding the build pipeline
-For this build we use a multi-job approach to divide and conquer validating and building our artifact. One job is responsible for building the "unchecked" image, pushing it our Azure Container Registry, and then validating it against Anchore (disabled).
+- Job 2 builds the code outside of a container and executes the unit test and then performs an OSS Dependency check with WhiteSource. If these all pass the job succeeds
 
-The other job runs the unit tests and would do various other checks against the source code (Dependency Scanning, OSS scanning, unit test validation) to validate that what is being built into the image in the other Job is valid. Only when both jobs complete with success is the next stage allowed to execute
+Once these jobs complete the second stage is initiated which rebuilds the Docker image as a "checked" image and then publishes our *testing* folder so it is available to the Release pipeline.
 
-The final stage rebuilds the image with a "checked" tag to indicate the image has passed inspection, it is pushed to the same Azure Container Registry. Additionally, any other artifacts needed by the Release process (except Infrastructure scripts) are "published" so they can be referenced in the Release pipeline
+#### Release Process
+Once the build completes, the Release pipeline will kick off with two artifacts: the build itself and the repo itself. We use the repo to pull in our Terraform infrastructure scripts. Dev will update the existing environment. Test and Metric will be stood up, executed, and then torn down.
 
-## UserApi
-UserApi serves general User level data such as Name (Username is duplicated with the Auth data source). New users are created in the database via an event delivered by Event Grid in response to User Creation in the AuthApi. This type of event driven sysytem is increasingly become more common and enables greater adherenance to distributed programming fundamentals.
+#### Events
+When a User is created the UserCreatedEvent is sent to the Azure Event Grid instance for that environment. This will be collected by the UserApi service which will create our User data in that data store (MongoDB).
 
-## Setup
+### User Api
+Deployed as an Azure Function App with three methods, two of which are public
+- UserCreatedFunction - Invoked when the UserCreatedEvent is received from the Azure Event Grid
+- Ping - Health check for the Azure Function
+- GetCurrentUserFunction - Externally exposed and returns information about the current user as stored in the data store (MongoDB)
 
-1. Open a Command Line instance and navigate to the &lt;root&gt;/infrastructure/setup folder
+The main example being shown here is the user of the Function App as a simple API and a connector for other backend components.
 
-#### Backend State
+#### Build Process
+In order to use Containers with Azure Function apps a Premium App Service Plan must be used. The rest of the configuration for the Function App parallels what we see when deploying App Service with the exception of the **WEBSITES_ENABLE_APP_SERVICE_STORAGE** being set to false.
+
+## Testing
+### Unit Testing
+Both services employe Unit Tests to verify the code level requirements, and the unit tests are executed in parallel with Docker image building. These are stored in the **.Tests** projects that are associated with each main project
+
+#### Integration Testing
+We employ integration testing in the AuthApi project using Newman. These verify the application operates as we expect when running. The Test environment is ephemeral, but we maintain the App Insights instance so any problems and data can be reviewed after the release is complete
+
+#### Metric Testing
+Artillery.io is used to employ metric testing against the AuthApi project. This is part of the accountability culture in DevOps where we want to enforce this testing early on so issues do not accrue over time. This Load Report is published with each Release
+
+## Extra Points
+
+### Subscription Creation
+For Event Grid to send data we need subscriptions between the Event Grid and the Function App. To do this we need to extract the **master key** from the Function App, to do this we use an Azure CLI task in the Release pipeline. This is then passed to the separate Terraform scripts that create the subscription.
+
+### Azure Key Vault
+Any sensitive data is stored in an Azure Key Vault and then extracted (using Terraform) and injected into resources. Further, the **JWT Key** and **Database Passwords** are generated by Terraform and stored in the Azure Key Vault so that no one without access to List in the Azure Key Vault - this also enables a central spot for sensitive data
