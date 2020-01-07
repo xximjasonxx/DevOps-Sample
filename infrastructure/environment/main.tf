@@ -119,6 +119,6 @@ resource "azurerm_key_vault_secret" "topic_id" {
 
 resource "azurerm_key_vault_secret" "mongo_connection" {
   name            = "${var.env_name}-mongo-connection"
-  value           = "${element(azurerm_cosmosdb_account.db.connection_strings.value, 0)}"
+  value           = "${element(azurerm_cosmosdb_account.db.connection_strings, 0)}"
   key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
