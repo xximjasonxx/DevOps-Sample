@@ -47,6 +47,16 @@ data "azurerm_sql_server" "sql" {
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
 }
 
+data "azurerm_key_vault" "kv" {
+  name                = "${var.app_name}-vault"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+}
+
+data "azurerm_key_vault_secret" "secret_key" {
+  name            = "jwt-${var.env_name}-key"
+  key_vault_id    = "${data.azurerm_key_vault.kv.id}"
+}
+
 resource "azurerm_sql_database" "database" {
   name                = "${var.app_name}-auth-db"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
@@ -80,7 +90,7 @@ resource "azurerm_app_service" "authapi" {
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
     DOCKER_REGISTRY_SERVER_PASSWORD = "${data.azurerm_container_registry.registry.admin_password}"
     ConnectionString                = "Server=${data.azurerm_sql_server.sql.fqdn};Database=${azurerm_sql_database.database.name};User Id=${data.azurerm_sql_server.sql.administrator_login};Password=Password01!;MultipleActiveResultSets=True;Connection Timeout=60",
-    JwtKey                          = "${var.jwt_key}"
+    JwtKey                          = "${data.azurerm_key_vault_secret.secret_key.value}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
     APPINSIGHTS_INSTRUMENTATIONKEY  = "${data.azurerm_application_insights.insights.instrumentation_key}"
