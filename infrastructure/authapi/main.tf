@@ -20,19 +20,6 @@ variable "env_name" {
   type = "string"
 }
 
-variable "jwt_key" {
-  type = "string"
-}
-
-variable "eg_topic_endpoint" {
-  type = "string"
-}
-
-variable "eg_access_key" {
-  type = "string" 
-}
-
-
 data "azurerm_resource_group" "rg" {
   name = "${var.app_name}-rg"
 }
@@ -57,6 +44,16 @@ data "azurerm_key_vault_secret" "secret_key" {
   key_vault_id    = "${data.azurerm_key_vault.kv.id}"
 }
 
+data "azurerm_key_vault_secret" "topic_key" {
+  name            = "${var.env_name}-topic-access-key"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}
+
+data "azurerm_key_vault_secret" "topic_endpoint" {
+  name            = "${var.env_name}-topic-endpoint"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}
+
 resource "azurerm_sql_database" "database" {
   name                = "${var.app_name}-auth-db"
   resource_group_name = "${data.azurerm_resource_group.rg.name}"
@@ -78,6 +75,11 @@ data "azurerm_application_insights" "insights" {
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
 }
 
+data "azurerm_key_vault_secret" "db_pass" {
+  name            = "db-${var.env_name}-pass"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}
+
 resource "azurerm_app_service" "authapi" {
   name                = "${var.app_name}-authapi-${var.env_name}"
   location            = "${data.azurerm_resource_group.rg.location}"
@@ -89,14 +91,14 @@ resource "azurerm_app_service" "authapi" {
     DOCKER_REGISTRY_SERVER_URL      = "${data.azurerm_container_registry.registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = "${data.azurerm_container_registry.registry.admin_username}"
     DOCKER_REGISTRY_SERVER_PASSWORD = "${data.azurerm_container_registry.registry.admin_password}"
-    ConnectionString                = "Server=${data.azurerm_sql_server.sql.fqdn};Database=${azurerm_sql_database.database.name};User Id=${data.azurerm_sql_server.sql.administrator_login};Password=Password01!;MultipleActiveResultSets=True;Connection Timeout=60",
+    ConnectionString                = "Server=${data.azurerm_sql_server.sql.fqdn};Database=${azurerm_sql_database.database.name};User Id=${data.azurerm_sql_server.sql.administrator_login};Password=${data.azurerm_key_vault_secret.db_pass.value};MultipleActiveResultSets=True;Connection Timeout=60",
     JwtKey                          = "${data.azurerm_key_vault_secret.secret_key.value}"
     JwtIssuer                       = "${var.app_name}"
     JwtAudience                     = "${var.app_name}-${var.env_name}"
     APPINSIGHTS_INSTRUMENTATIONKEY  = "${data.azurerm_application_insights.insights.instrumentation_key}"
     ASPNETCORE_ENVIRONMENT          = "${var.env_name}"
-    EventTopicEndpoint              = "${var.eg_topic_endpoint}"
-    EventTopicAccessKey             = "${var.eg_access_key}"
+    EventTopicEndpoint              = "${data.azurerm_key_vault_secret.topic_endpoint.value}"
+    EventTopicAccessKey             = "${data.azurerm_key_vault_secret.topic_key.value}"
   }
 
   site_config {

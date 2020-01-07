@@ -81,3 +81,21 @@ resource "azurerm_key_vault_secret" "metric_key" {
   value           = "${base64encode(uuid())}"
   key_vault_id    = "${azurerm_key_vault.kv.id}"
 }
+
+resource "azurerm_key_vault_secret" "dev_db_pass" {
+  name            = "db-dev-pass"
+  value           = "${base64encode(uuid())}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}
+
+resource "azurerm_key_vault_secret" "test_db_pass" {
+  name            = "db-test-pass"
+  value           = "${base64encode(uuid())}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}
+
+resource "azurerm_key_vault_secret" "metric_db_pass" {
+  name            = "db-metric-pass"
+  value           = "${base64encode(uuid())}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}

@@ -29,13 +29,23 @@ resource "azurerm_eventgrid_topic" "topic" {
     }
 }
 
+data "azurerm_key_vault" "kv" {
+  name                = "${var.app_name}-vault"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+}
+
+data "azurerm_key_vault_secret" "db_pass" {
+  name            = "db-${var.env_name}-pass"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
+}
+
 resource "azurerm_sql_server" "sql" {
   name                          = "${var.app_name}-${var.env_name}-sqlserver"
   resource_group_name           = "${data.azurerm_resource_group.rg.name}"
   location                      = "${data.azurerm_resource_group.rg.location}"  
   version                       = "12.0"
   administrator_login           = "${var.env_name}-admin"
-  administrator_login_password  = "Password01!"
+  administrator_login_password  = "${data.azurerm_key_vault_secret.db_pass.value}"
 
   tags = {
     environment = "${var.env_name}"
@@ -89,18 +99,26 @@ resource "azurerm_app_service_plan" "plan" {
   }
 }
 
-output "topic_access_key" {
-  value = "${azurerm_eventgrid_topic.topic.primary_access_key}"
+resource "azurerm_key_vault_secret" "topic_key" {
+  name            = "${var.env_name}-topic-access-key"
+  value           = "${azurerm_eventgrid_topic.topic.primary_access_key}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
 }
 
-output "topic_endpoint" {
-  value = "${azurerm_eventgrid_topic.topic.endpoint}"
+resource "azurerm_key_vault_secret" "topic_endpoint" {
+  name            = "${var.env_name}-topic-endpoint"
+  value           = "${azurerm_eventgrid_topic.topic.endpoint}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
 }
 
-output "topic_id" {
-  value = "${azurerm_eventgrid_topic.topic.id}"
+resource "azurerm_key_vault_secret" "topic_id" {
+  name            = "${var.env_name}-topic-id"
+  value           = "${azurerm_eventgrid_topic.topic.id}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
 }
 
-output "mongo_connections" {
-  value = "${azurerm_cosmosdb_account.db.connection_strings}"
+resource "azurerm_key_vault_secret" "mongo_connection" {
+  name            = "${var.env_name}-mongo-connection"
+  value           = "${azurerm_cosmosdb_account.db.connection_strings.value[0]}"
+  key_vault_id    = "${azurerm_key_vault.kv.id}"
 }
