@@ -90,7 +90,7 @@ resource "azurerm_function_app" "funcApp" {
         WEBSITES_ENABLE_APP_SERVICE_STORAGE       = false
         ConnectionString                          = "${data.azurerm_key_vault_secret.mongo_connection.value}"
         DatabaseName                              = "${var.app_name}-userdb"
-        JwtKey                                    = "${data.azurerm_key_vault_secret.jwt_key}"
+        JwtKey                                    = "${data.azurerm_key_vault_secret.jwt_key.value}"
         JwtIssuer                                 = "${var.app_name}"
         JwtAudience                               = "${var.app_name}-${var.env_name}"
     }
